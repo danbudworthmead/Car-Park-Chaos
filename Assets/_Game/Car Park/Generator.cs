@@ -1,13 +1,18 @@
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class CarParkGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject[] tilePrefabs;
+    [SerializeField] private GameObject endTilePrefab;
     [SerializeField] private int seed;
+    [SerializeField] private int size;
 
     private int loopCount = 0;
-    
+
+    private List<Vector2Int> _tiles = new();
+
     private void Start()
     {
         Random.InitState(seed);
@@ -17,12 +22,20 @@ public class CarParkGenerator : MonoBehaviour
         var currentTile = obj.GetComponent<CarParkTile>();
 
         GenerateNeighbourTiles(currentTile);
+
+        var spaces = GameObject.FindGameObjectsWithTag("CarParkSpace");
+        // remove 1 of the spaces
+        for (var i = 0; i < 1; ++i)
+        {
+            var space = spaces[Random.Range(0, spaces.Length)];
+            space.transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     private void GenerateNeighbourTiles(CarParkTile currentTile)
     {
         loopCount++;
-        if (loopCount > 10) return;
+        if (loopCount > 500) return;
         
         for (var i = 0; i < currentTile.connectionsParent.childCount; ++i)
         {
@@ -32,6 +45,12 @@ public class CarParkGenerator : MonoBehaviour
             // choose a random tile
             var randomTile = tilePrefabs[Random.Range(0, tilePrefabs.Length)];
             
+            if (currentTile.transform.position.x > size 
+                || currentTile.transform.position.z > size 
+                || currentTile.transform.position.x < -size 
+                || currentTile.transform.position.z < -size)
+                randomTile = endTilePrefab;
+            
             // find the distance to that connection
             var connection = currentTile.connectionsParent.GetChild(i);
             
@@ -39,9 +58,16 @@ public class CarParkGenerator : MonoBehaviour
             if (!connection.gameObject.activeSelf) continue;
             
             var distance = connection.position - currentTile.transform.position;
+
+            var newPos = connection.position + distance;
+
+            var coords = new Vector2Int(Mathf.RoundToInt(newPos.x), Mathf.RoundToInt(newPos.z));
+            if (_tiles.Contains(coords)) continue;
+            
+            _tiles.Add(coords);
             
             // instance the random tile at double the distance away
-            var newTile = Instantiate(randomTile, connection.position + distance, Quaternion.identity);
+            var newTile = Instantiate(randomTile, newPos, Quaternion.identity);
             
             // rotate the tile a random amount around the y axis to make it look more random but keep it aligned to the grid
             newTile.transform.rotation = Quaternion.Euler(0, Random.Range(0, 4) * 90, 0);
