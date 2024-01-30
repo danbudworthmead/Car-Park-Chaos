@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CarPhysics : MonoBehaviour
@@ -5,19 +6,19 @@ public class CarPhysics : MonoBehaviour
     [SerializeField] private float maxSpeed;
     [SerializeField] private float torque;
     [SerializeField] private float turnSpeed;
-    
-    private Rigidbody _rigidbody;
+    [SerializeField] private float suspension;
+    [SerializeField] private float tireHeight;
+    [SerializeField] private Transform wheelsParent;
+    [SerializeField] private new Rigidbody rigidbody;
+    [SerializeField] private TMP_Text speedText;
     
     private float _acceleration;
     private float _steering;
 
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
-
     public void SetAcceleration(float acceleration)
     {
+        if (acceleration < 0)
+            acceleration *= 0.5f;
         _acceleration = acceleration * torque;
     }
 
@@ -28,20 +29,49 @@ public class CarPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // apply acceleration to the car
-        _rigidbody.AddForce(transform.forward * _acceleration);
-        
-        // clamp the speed of the car (half if we are reversing)
-        _rigidbody.velocity = Vector3.ClampMagnitude(_rigidbody.velocity, 
-            maxSpeed * (_acceleration < 0 ? 0.5f : 1f));
-        
         // apply steering to the car but use the speed of the car
         // to make the steering more realistic
         // inverse the steering if we're reversing
-        var turn = _steering * _rigidbody.velocity.magnitude;
-        if (_acceleration < 0)
-            turn *= -1;
+        // var turn = _steering * rigidbody.velocity.magnitude;
+        // if (_acceleration < 0)
+        //     turn *= -1;
+        // rigidbody.MoveRotation(rigidbody.rotation * Quaternion.Euler(0, turn, 0));
+
+        for (int i = 0; i < wheelsParent.childCount; ++i)
+        {
+            var wheel = wheelsParent.GetChild(i);
+            if (Physics.Raycast(wheel.transform.position, -wheel.transform.up *tireHeight, out var hit, 1f))
+            {
+                // apply suspension to the car
+                hit.distance = tireHeight - hit.distance;
+                rigidbody.AddForceAtPosition(transform.up * (suspension * hit.distance), hit.point);
+            
+                // apply acceleration to each wheel
+                rigidbody.AddForceAtPosition(wheel.transform.forward * _acceleration, hit.point);
+            }
+            
+            // if we are the front two wheels
+            if (i < 2)
+            {
+                // apply steering to the wheels
+                wheel.localRotation = Quaternion.Euler(0, _steering, 0);
+            }
+        }
         
-        _rigidbody.MoveRotation(_rigidbody.rotation * Quaternion.Euler(0, turn, 0));
+        // clamp the speed of the car (half if we are reversing)
+        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
+        speedText.text = rigidbody.velocity.magnitude.ToString("0.00");
+    }
+    
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < wheelsParent.childCount; ++i)
+        {
+            var wheel = wheelsParent.GetChild(i);
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(wheel.transform.position, -wheel.transform.up * tireHeight);
+            
+            Gizmos.DrawRay(wheel.transform.position, wheel.transform.forward * 1f);
+        }
     }
 }
