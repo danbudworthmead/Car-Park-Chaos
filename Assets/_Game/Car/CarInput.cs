@@ -37,6 +37,15 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Brake"",
+                    ""type"": ""Value"",
+                    ""id"": ""c511b340-0001-47f9-b13b-200dde89fae3"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Steering"",
                     ""type"": ""Value"",
                     ""id"": ""9a5574a8-128f-436b-b82d-2110c8148a18"",
@@ -57,17 +66,6 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
                     ""action"": ""Accelerate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""cdeb2ccb-699c-4ded-91ad-976c61f2c526"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Accelerate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""positive"",
@@ -112,6 +110,28 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
                     ""action"": ""Steering"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""a3ce1624-56c8-4733-940b-fe90b0deef55"",
+                    ""path"": ""1DAxis(whichSideWins=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""779f88c8-a239-4688-9ff4-397ed151f3ed"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -121,6 +141,7 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
         // Drive
         m_Drive = asset.FindActionMap("Drive", throwIfNotFound: true);
         m_Drive_Accelerate = m_Drive.FindAction("Accelerate", throwIfNotFound: true);
+        m_Drive_Brake = m_Drive.FindAction("Brake", throwIfNotFound: true);
         m_Drive_Steering = m_Drive.FindAction("Steering", throwIfNotFound: true);
     }
 
@@ -184,12 +205,14 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Drive;
     private List<IDriveActions> m_DriveActionsCallbackInterfaces = new List<IDriveActions>();
     private readonly InputAction m_Drive_Accelerate;
+    private readonly InputAction m_Drive_Brake;
     private readonly InputAction m_Drive_Steering;
     public struct DriveActions
     {
         private @CarInput m_Wrapper;
         public DriveActions(@CarInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Accelerate => m_Wrapper.m_Drive_Accelerate;
+        public InputAction @Brake => m_Wrapper.m_Drive_Brake;
         public InputAction @Steering => m_Wrapper.m_Drive_Steering;
         public InputActionMap Get() { return m_Wrapper.m_Drive; }
         public void Enable() { Get().Enable(); }
@@ -203,6 +226,9 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
             @Accelerate.started += instance.OnAccelerate;
             @Accelerate.performed += instance.OnAccelerate;
             @Accelerate.canceled += instance.OnAccelerate;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
             @Steering.started += instance.OnSteering;
             @Steering.performed += instance.OnSteering;
             @Steering.canceled += instance.OnSteering;
@@ -213,6 +239,9 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
             @Accelerate.started -= instance.OnAccelerate;
             @Accelerate.performed -= instance.OnAccelerate;
             @Accelerate.canceled -= instance.OnAccelerate;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
             @Steering.started -= instance.OnSteering;
             @Steering.performed -= instance.OnSteering;
             @Steering.canceled -= instance.OnSteering;
@@ -236,6 +265,7 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
     public interface IDriveActions
     {
         void OnAccelerate(InputAction.CallbackContext context);
+        void OnBrake(InputAction.CallbackContext context);
         void OnSteering(InputAction.CallbackContext context);
     }
 }

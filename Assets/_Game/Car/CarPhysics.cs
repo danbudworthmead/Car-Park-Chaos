@@ -1,76 +1,83 @@
 using _Game.Car;
-using TMPro;
 using UnityEngine;
 
 public class CarPhysics : MonoBehaviour
 {
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float torque;
-    [SerializeField] private float turnSpeed;
-    [SerializeField] private float suspension;
-    [SerializeField] private float tireHeight;
-    [SerializeField] private Transform wheelsParent;
-    [SerializeField] private new Rigidbody rigidbody;
-    [SerializeField] private TMP_Text speedText;
-    [SerializeField] private Headlights headlights;
+    [SerializeField] private Headlights rearHeadlights;
     
-    private float _acceleration;
-    private float _steering;
+    [SerializeField] private WheelCollider frontLeft;
+    [SerializeField] private WheelCollider frontRight;
+    [SerializeField] private WheelCollider rearLeft;
+    [SerializeField] private WheelCollider rearRight;
 
-    public void SetAcceleration(float acceleration)
+    [SerializeField] private Transform frontLeftWheel;
+    [SerializeField] private Transform frontRightWheel;
+    [SerializeField] private Transform rearLeftWheel;
+    [SerializeField] private Transform rearRightWheel;
+
+    [SerializeField] private float acceleration = 500f;
+    [SerializeField] private float breakingForce = 300f;
+    [SerializeField] private float maxTurnAngle = 15f;
+
+    [SerializeField] private new Rigidbody rigidbody;
+
+    private float _currentAcceleration = 0f;
+    private float _currentBrakeForce = 0f;
+    private float _currentTurnAngle = 0f;
+
+    public float Speed { get; private set; }
+
+    public void SetAcceleration(float accelerator)
     {
-        headlights.SetOn(acceleration < 0);
-        
-        if (acceleration < 0)
-        {
-            acceleration *= 0.5f;
-        }
+        _currentAcceleration = accelerator * acceleration;
+    }
 
-        _acceleration = acceleration * torque;
+    public void SetBrake(float brake)
+    {
+        _currentBrakeForce = brake * breakingForce;
+        rearHeadlights.SetOn(brake > 0);
     }
 
     public void SetSteering(float steering)
     {
-        _steering = steering * turnSpeed;
+        _currentTurnAngle = steering * maxTurnAngle;
     }
 
     private void FixedUpdate()
     {
-        for (var i = 0; i < wheelsParent.childCount; ++i)
-        {
-            var wheel = wheelsParent.GetChild(i);
-            if (Physics.Raycast(wheel.transform.position, -wheel.transform.up *tireHeight, out var hit, 1f))
-            {
-                // apply suspension to the car
-                hit.distance = tireHeight - hit.distance;
-                rigidbody.AddForceAtPosition(transform.up * (suspension * hit.distance), hit.point);
-            
-                // apply acceleration to each wheel
-                rigidbody.AddForceAtPosition(wheel.transform.forward * _acceleration, hit.point);
-            }
-            
-            // if we are the front two wheels
-            if (i < 2)
-            {
-                // apply steering to the wheels
-                wheel.localRotation = Quaternion.Lerp(wheel.localRotation, 
-                    Quaternion.Euler(0, _steering, 0), 0.1f);
-            }
-        }
+        var accel = _currentAcceleration - _currentBrakeForce;
         
-        // clamp the speed of the car
-        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
-        speedText.text = rigidbody.velocity.magnitude.ToString("0.00");
+        // apply acceleration to the front wheels
+        frontLeft.motorTorque = accel;
+        frontRight.motorTorque = accel;
+        
+        // apply braking to all wheels
+        var brakeForce = accel > 0 ? _currentBrakeForce : _currentAcceleration;
+        
+        frontLeft.brakeTorque = brakeForce;
+        frontRight.brakeTorque = brakeForce;
+        rearLeft.brakeTorque = brakeForce;
+        rearRight.brakeTorque = brakeForce;
+        
+        // handle turning
+        frontLeft.steerAngle = _currentTurnAngle;
+        frontRight.steerAngle = _currentTurnAngle;
+        
+        Speed = rigidbody.velocity.magnitude;
     }
-    
-    private void OnDrawGizmos()
+
+    private void Update()
     {
-        for (int i = 0; i < wheelsParent.childCount; ++i)
-        {
-            var wheel = wheelsParent.GetChild(i);
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(wheel.transform.position, -wheel.transform.up * tireHeight);
-            Gizmos.DrawRay(wheel.transform.position, wheel.transform.forward * 1f);
-        }
+        UpdateWheel(frontLeft, frontLeftWheel);
+        UpdateWheel(frontRight, frontRightWheel);
+        UpdateWheel(rearLeft, rearLeftWheel);
+        UpdateWheel(rearRight, rearRightWheel);
+    }
+
+    private static void UpdateWheel(WheelCollider col, Transform t)
+    {
+        col.GetWorldPose(out var pos, out var rot);
+        t.position = pos;
+        t.rotation = rot;
     }
 }

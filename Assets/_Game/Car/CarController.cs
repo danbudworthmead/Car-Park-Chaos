@@ -14,6 +14,11 @@ public class CarController : MonoBehaviour
     {
         _carPhysics.SetAcceleration(value.Get<float>());
     }
+    
+    public void OnBrake(InputValue value)
+    {
+        _carPhysics.SetBrake(value.Get<float>());
+    }
 
     public void OnSteering(InputValue value)
     {
