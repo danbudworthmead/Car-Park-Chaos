@@ -1,3 +1,4 @@
+using _Game.Car;
 using TMPro;
 using UnityEngine;
 
@@ -11,14 +12,20 @@ public class CarPhysics : MonoBehaviour
     [SerializeField] private Transform wheelsParent;
     [SerializeField] private new Rigidbody rigidbody;
     [SerializeField] private TMP_Text speedText;
+    [SerializeField] private Headlights headlights;
     
     private float _acceleration;
     private float _steering;
 
     public void SetAcceleration(float acceleration)
     {
+        headlights.SetOn(acceleration < 0);
+        
         if (acceleration < 0)
+        {
             acceleration *= 0.5f;
+        }
+
         _acceleration = acceleration * torque;
     }
 

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3179705863974860753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6662838623830578932}
+  - component: {fileID: 3060359412919809186}
+  m_Layer: 0
+  m_Name: CarParkSpace
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6662838623830578932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3179705863974860753}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.408, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3060359412919809186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3179705863974860753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21280dfe03cbdbb4ba663c5ce0f71e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cars:
+  - {fileID: 4149098858240801394, guid: d3b0a7aa356c5a54a94636f84d7f6a02, type: 3}
+  - {fileID: 4149098858240801394, guid: 4c31e37a07867924a9d40bc3818612d5, type: 3}
+  - {fileID: 4149098858240801394, guid: 2d7a21074f5215244b66f31e6c8af703, type: 3}
+  - {fileID: 4149098858240801394, guid: 32e93bdb85effcd4c9c1a59b12965370, type: 3}
+  - {fileID: 4149098858240801394, guid: 78eb3cd8cdaea46449ace21d2d161649, type: 3}
+  - {fileID: 4149098858240801394, guid: a2edc40cc2fd0c94a92920a3e13db42c, type: 3}
+  - {fileID: 4149098858240801394, guid: 4b6883e675a493a41b63be6143d676cf, type: 3}
+  - {fileID: 4149098858240801394, guid: 2681254bb2e84be4b84cabc8ef279e4a, type: 3}

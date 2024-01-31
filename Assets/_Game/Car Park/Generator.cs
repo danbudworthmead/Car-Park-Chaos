@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class CarParkGenerator : MonoBehaviour
 {
@@ -68,6 +67,7 @@ public class CarParkGenerator : MonoBehaviour
             
             // instance the random tile at double the distance away
             var newTile = Instantiate(randomTile, newPos, Quaternion.identity);
+            newTile.transform.SetParent(transform);
             
             // rotate the tile a random amount around the y axis to make it look more random but keep it aligned to the grid
             newTile.transform.rotation = Quaternion.Euler(0, Random.Range(0, 4) * 90, 0);
