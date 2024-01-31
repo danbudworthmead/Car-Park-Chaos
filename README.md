@@ -1,3 +1,6 @@
+# DO NOT PUSH TO MAIN
+Open a branch for your feature and create a merge request.
+
 # Car Park Chaos
 
 ## Overview
