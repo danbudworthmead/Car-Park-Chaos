@@ -29,15 +29,7 @@ public class CarPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // apply steering to the car but use the speed of the car
-        // to make the steering more realistic
-        // inverse the steering if we're reversing
-        // var turn = _steering * rigidbody.velocity.magnitude;
-        // if (_acceleration < 0)
-        //     turn *= -1;
-        // rigidbody.MoveRotation(rigidbody.rotation * Quaternion.Euler(0, turn, 0));
-
-        for (int i = 0; i < wheelsParent.childCount; ++i)
+        for (var i = 0; i < wheelsParent.childCount; ++i)
         {
             var wheel = wheelsParent.GetChild(i);
             if (Physics.Raycast(wheel.transform.position, -wheel.transform.up *tireHeight, out var hit, 1f))
@@ -54,11 +46,12 @@ public class CarPhysics : MonoBehaviour
             if (i < 2)
             {
                 // apply steering to the wheels
-                wheel.localRotation = Quaternion.Euler(0, _steering, 0);
+                wheel.localRotation = Quaternion.Lerp(wheel.localRotation, 
+                    Quaternion.Euler(0, _steering, 0), 0.1f);
             }
         }
         
-        // clamp the speed of the car (half if we are reversing)
+        // clamp the speed of the car
         rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
         speedText.text = rigidbody.velocity.magnitude.ToString("0.00");
     }
@@ -70,7 +63,6 @@ public class CarPhysics : MonoBehaviour
             var wheel = wheelsParent.GetChild(i);
             Gizmos.color = Color.red;
             Gizmos.DrawRay(wheel.transform.position, -wheel.transform.up * tireHeight);
-            
             Gizmos.DrawRay(wheel.transform.position, wheel.transform.forward * 1f);
         }
     }
