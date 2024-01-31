@@ -17,7 +17,7 @@ namespace _Game.Camera
             // follow the target but keep upright
             transform.position = target.position;
             var newRot = Quaternion.Euler(0, target.eulerAngles.y, 0);
-            transform.rotation = Quaternion.Lerp(transform.rotation, newRot, 0.1f);
+            transform.rotation = newRot;
         }
     }
 }
