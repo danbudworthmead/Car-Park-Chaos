@@ -1,13 +1,21 @@
-using UnityEngine;
+using Unity.Netcode;
 using UnityEngine.InputSystem;
 
-public class CarController : MonoBehaviour
+public class CarController : NetworkBehaviour
 {
     private CarPhysics _carPhysics;
 
     private void Awake()
     {
         _carPhysics = GetComponent<CarPhysics>();
+    }
+
+    private void Start()
+    {
+        if (!IsOwner)
+        {
+            Destroy(this);
+        }
     }
 
     public void OnAccelerate(InputValue value)
