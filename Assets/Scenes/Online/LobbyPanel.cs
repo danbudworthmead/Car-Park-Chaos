@@ -1,3 +1,4 @@
+using Scenes.Online.LobbyViewer;
 using UnityEngine;
 
 namespace Scenes.Online

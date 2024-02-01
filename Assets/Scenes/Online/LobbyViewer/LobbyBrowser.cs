@@ -1,32 +1,68 @@
-using System;
 using System.Threading.Tasks;
-using Scenes.Online;
 using UnityEngine;
 
-public class LobbyBrowser : MonoBehaviour
+namespace Scenes.Online.LobbyViewer
 {
-    [SerializeField] private Transform lobbyListParent;
-    [SerializeField] private GameObject lobbyPanelPrefab;
-
-    private async void Start()
+    public class LobbyBrowser : MonoBehaviour
     {
-        InvokeRepeating(nameof(RefreshLobbies), 1f, 1f);
-    }
+        [SerializeField] private Transform lobbyListParent;
+        [SerializeField] private GameObject lobbyPanelPrefab;
 
-    public async Task RefreshLobbies()
-    {
-        // destroy all children of lobbyPanelPrefab
-        foreach (Transform child in lobbyListParent)
+        private async void Start()
         {
-            Destroy(child.gameObject);
+            InvokeRepeating(nameof(RefreshLobbies), 1f, 3f);
         }
-        
-        var lobbies = await LobbyManager.Instance.ListLobbies();
-        if (lobbies == null) return;
-        foreach (var lobby in lobbies)
+
+        public async Task RefreshLobbies()
         {
-            var lobbyPanel = Instantiate(lobbyPanelPrefab, lobbyListParent).GetComponent<LobbyDetailsPanel>();
-            lobbyPanel.Set(lobby);
+            var lobbies = await LobbyManager.Instance.ListLobbies();
+            if (lobbies == null)
+            {
+                // destroy all panels
+                foreach (Transform child in lobbyListParent)
+                {
+                    Destroy(child.gameObject);
+                }
+                return;
+            }
+            
+            // update panels that already exist
+            foreach (Transform child in lobbyListParent)
+            {
+                var lobbyPanel = child.GetComponent<LobbyDetailsPanel>();
+                if (lobbyPanel != null)
+                {
+                    var lobby = lobbies.Find(l => l.Id == lobbyPanel.name);
+                    if (lobby != null)
+                    {
+                        lobbyPanel.Set(lobby);
+                    }
+                }
+            }
+            
+            // create new panels for new lobbies
+            foreach (var lobby in lobbies)
+            {
+                if (lobbyListParent.Find(lobby.Id) == null)
+                {
+                    var lobbyPanel = Instantiate(lobbyPanelPrefab, lobbyListParent).GetComponent<LobbyDetailsPanel>();
+                    lobbyPanel.Set(lobby);
+                }
+            }
+            
+            // destroy panels for lobbies that no longer exist
+            foreach (Transform child in lobbyListParent)
+            {
+                var lobbyPanel = child.GetComponent<LobbyDetailsPanel>();
+                if (lobbyPanel != null)
+                {
+                    var lobby = lobbies.Find(l => l.Id == lobbyPanel.name);
+                    if (lobby == null)
+                    {
+                        Destroy(lobbyPanel.gameObject);
+                    }
+                }
+            }
         }
     }
 }
