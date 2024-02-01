@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IngameDebugConsole;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -23,6 +24,7 @@ namespace Scenes.Online
         
         private int _countdownTimer = 0;
         private bool _hasStarted = false;
+        private bool _startedJoiningRelay = false;
 
         private void Awake()
         {
@@ -179,13 +181,6 @@ namespace Scenes.Online
             try
             {
                 var response = await Lobbies.Instance.QueryLobbiesAsync();
-                Debug.Log($"Lobbies: {response.Results.Count}");
-
-                foreach (var lobby in response.Results)
-                {
-                    Debug.Log($"Lobby: {lobby.Id} - {lobby.Name} - {lobby.Players.Count}/{lobby.MaxPlayers}");
-                }
-
                 return response.Results;
             }
             catch (LobbyServiceException e)
@@ -232,6 +227,7 @@ namespace Scenes.Online
             {
                 try
                 {
+                    _startedJoiningRelay = true;
                     var code = await RelayManager.Instance.CreateRelay();
                     
                     var lobby = await Lobbies.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
@@ -273,6 +269,19 @@ namespace Scenes.Online
         public async Task RefreshLobby()
         {
             _joinedLobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
+            if (_joinedLobby.Data[KeyStartGame].Value != "0")
+            {
+                await JoinRelay();
+            }
+        }
+
+        private async Task JoinRelay()
+        {
+            if (!AmHost() && !_startedJoiningRelay)
+            {
+                _startedJoiningRelay = true;
+                await RelayManager.Instance.JoinRelay(_joinedLobby.Data[KeyStartGame].Value);
+            }
         }
 
         public async Task SetReady(bool toggleIsOn)

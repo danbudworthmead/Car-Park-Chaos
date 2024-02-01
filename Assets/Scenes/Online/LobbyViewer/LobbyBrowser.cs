@@ -8,13 +8,18 @@ namespace Scenes.Online.LobbyViewer
         [SerializeField] private Transform lobbyListParent;
         [SerializeField] private GameObject lobbyPanelPrefab;
 
-        private async void Start()
+        private void Start()
         {
             InvokeRepeating(nameof(RefreshLobbies), 1f, 3f);
         }
 
         public async Task RefreshLobbies()
         {
+            if (gameObject.activeSelf == false)
+            {
+                return;
+            }
+            
             var lobbies = await LobbyManager.Instance.ListLobbies();
             if (!Application.isPlaying)
             {

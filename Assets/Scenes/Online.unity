@@ -1751,6 +1751,7 @@ GameObject:
   - component: {fileID: 697755836}
   - component: {fileID: 697755835}
   - component: {fileID: 697755834}
+  - component: {fileID: 697755837}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1837,6 +1838,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &697755837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697755833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3d0487e64364742ac3debcbf073199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &730399473
 GameObject:
   m_ObjectHideFlags: 0
@@ -4575,6 +4588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1994410018}
   - component: {fileID: 1994410017}
+  - component: {fileID: 1994410019}
   m_Layer: 0
   m_Name: Relay
   m_TagString: Untagged
@@ -4609,6 +4623,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1994410019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994410016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3d0487e64364742ac3debcbf073199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2031877981
 GameObject:
   m_ObjectHideFlags: 0

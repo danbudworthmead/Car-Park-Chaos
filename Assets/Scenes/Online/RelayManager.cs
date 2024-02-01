@@ -27,7 +27,7 @@ namespace Scenes.Online
             {
                 var allocation = await RelayService.Instance.CreateAllocationAsync(3);
                 code = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-                Debug.Log(code);
+                Debug.Log($"Created relay {code} with allocation {allocation.AllocationId}");
 
                 var relayServerData = new RelayServerData(allocation, "dtls");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
@@ -42,7 +42,7 @@ namespace Scenes.Online
             return code;
         }
 
-        public async void JoinRelay(string joinCode)
+        public async Task JoinRelay(string joinCode)
         {
             try
             {
@@ -52,6 +52,7 @@ namespace Scenes.Online
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
                 NetworkManager.Singleton.StartClient();
+                Debug.Log($"Joined relay {joinCode} with allocation {allocation.AllocationId}");
             }
             catch (RelayServiceException e)
             {
