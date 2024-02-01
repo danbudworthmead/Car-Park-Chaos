@@ -19,6 +19,7 @@ namespace Scenes.Online
         private float _heartbeatTimer;
         private string _playerName;
         public static LobbyManager Instance { get; private set; }
+        public string MyId => AuthenticationService.Instance.PlayerId;
 
         private void Awake()
         {
@@ -193,6 +194,24 @@ namespace Scenes.Online
         public async Task RefreshLobby()
         {
             _joinedLobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
+        }
+
+        public async Task SetReady(bool toggleIsOn)
+        {
+            try
+            {
+                await LobbyService.Instance.UpdatePlayerAsync(_joinedLobby.Id, MyId, new UpdatePlayerOptions
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, toggleIsOn.ToString().ToLower()) }
+                    }
+                });
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
         }
     }
 }

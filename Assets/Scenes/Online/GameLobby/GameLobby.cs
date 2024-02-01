@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,9 +11,9 @@ namespace Scenes.Online.GameLobby
         
         private float heartbeatTimer = 0f;
 
-        private void OnEnable()
+        private async void OnEnable()
         {
-            RefreshLobby();
+            await RefreshLobby();
         }
 
         private async void FixedUpdate()

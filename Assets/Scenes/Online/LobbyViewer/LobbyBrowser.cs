@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Scenes.Online;
 using UnityEngine;
@@ -6,6 +7,11 @@ public class LobbyBrowser : MonoBehaviour
 {
     [SerializeField] private Transform lobbyListParent;
     [SerializeField] private GameObject lobbyPanelPrefab;
+
+    private async void Start()
+    {
+        InvokeRepeating(nameof(RefreshLobbies), 1f, 1f);
+    }
 
     public async Task RefreshLobbies()
     {
