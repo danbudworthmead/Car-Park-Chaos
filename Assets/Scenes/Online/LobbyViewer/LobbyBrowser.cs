@@ -16,6 +16,11 @@ namespace Scenes.Online.LobbyViewer
         public async Task RefreshLobbies()
         {
             var lobbies = await LobbyManager.Instance.ListLobbies();
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+            
             if (lobbies == null)
             {
                 // destroy all panels

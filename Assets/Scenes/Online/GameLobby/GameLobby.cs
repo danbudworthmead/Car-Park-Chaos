@@ -46,6 +46,10 @@ namespace Scenes.Online.GameLobby
         public async Task RefreshLobby()
         {
             await LobbyManager.Instance.RefreshLobby();
+            if (!Application.isPlaying)
+            {
+                return;
+            }
             
             var players = LobbyManager.Instance.GetPlayers();
             
