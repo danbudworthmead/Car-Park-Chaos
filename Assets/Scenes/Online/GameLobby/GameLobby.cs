@@ -1,5 +1,5 @@
-using System;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 namespace Scenes.Online.GameLobby
@@ -8,8 +8,10 @@ namespace Scenes.Online.GameLobby
     {
         [SerializeField] private Transform listParent;
         [SerializeField] private GameObject playerDetailsPrefab;
+        [SerializeField] private TMP_Text countdownText;
         
         private float heartbeatTimer = 0f;
+        private float countdownTimer = 0f;
 
         private async void OnEnable()
         {
@@ -19,6 +21,16 @@ namespace Scenes.Online.GameLobby
         private async void FixedUpdate()
         {
             await HandleHeartbeat();
+
+            var countdown = LobbyManager.Instance.GetCountdown();
+            if (countdown == string.Empty)
+            {
+                countdownText.text = string.Empty;
+            }
+            else
+            {
+                countdownText.text = $"Game starting in {countdown}...";
+            }
         }
 
         private async Task HandleHeartbeat()

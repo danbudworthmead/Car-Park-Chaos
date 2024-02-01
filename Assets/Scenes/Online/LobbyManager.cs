@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IngameDebugConsole;
-using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -14,12 +13,16 @@ namespace Scenes.Online
     public class LobbyManager : MonoBehaviour
     {
         private const string KeyStartGame = "StartGame_RelayCode";
+        private const string KeyCountdown = "StartGame_Countdown";
 
         private Lobby _joinedLobby;
         private float _heartbeatTimer;
         private string _playerName;
         public static LobbyManager Instance { get; private set; }
         public string MyId => AuthenticationService.Instance.PlayerId;
+        
+        private int _countdownTimer = 0;
+        private bool _hasStarted = false;
 
         private void Awake()
         {
@@ -49,8 +52,82 @@ namespace Scenes.Online
         private void Update()
         {
             HandleLobbyHeartbeat();
+            
+            if (_joinedLobby == null) return;
+            
+
+            // check the lobby hasn't started
+            if (AmHost() && !HasStarted())
+            {
+                // check if all players are ready
+                if (AreAllPlayersReady() && !IsInvoking(nameof(Countdown)))
+                {
+                    _countdownTimer = 5;
+                    InvokeRepeating(nameof(Countdown), 1f, 1f);
+                }
+            }
         }
         
+        private bool HasStarted()
+        {
+            return _hasStarted;
+        }
+
+        private async void Countdown()
+        {
+            if (HasStarted())
+            {
+                CancelInvoke(nameof(Countdown));
+                _countdownTimer = 0;
+                return;
+            }
+            
+            if (!AreAllPlayersReady())
+            {
+                CancelInvoke(nameof(Countdown));
+                _countdownTimer = 5;
+                return;
+            }
+            
+            // update lobby countdown
+            try
+            {
+                _joinedLobby = await LobbyService.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        {
+                            KeyCountdown,
+                            new DataObject(DataObject.VisibilityOptions.Member, _countdownTimer.ToString())
+                        }
+                    }
+                });
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogError(e);
+            }
+            
+            if (_countdownTimer == 0)
+            {
+                StartLobby();
+                CancelInvoke(nameof(Countdown));
+                return;
+            }
+            
+            _countdownTimer -= 1;
+        }
+
+        private bool AreAllPlayersReady()
+        {
+            return _joinedLobby.Players.All(player => player.Data["Ready"].Value == "true");
+        }
+
+        private bool AmHost()
+        {
+            return _joinedLobby.HostId == MyId;
+        }
+
         private void HandleLobbyHeartbeat()
         {
             if (_joinedLobby == null) return;
@@ -150,7 +227,8 @@ namespace Scenes.Online
 
         private async void StartLobby()
         {
-            if (IsLobbyHost())
+            _hasStarted = true;
+            if (AmHost())
             {
                 try
                 {
@@ -173,14 +251,15 @@ namespace Scenes.Online
             }
         }
 
-        private bool IsLobbyHost()
-        {
-            return _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
-        }
-
         public List<Player> GetPlayers()
         {
             return _joinedLobby.Players;
+        }
+
+        public string GetCountdown()
+        {
+            if (_joinedLobby == null || !_joinedLobby.Data.ContainsKey(KeyCountdown)) return string.Empty;
+            return _joinedLobby.Data[KeyCountdown].Value;
         }
 
         public async Task JoinLobby(string id)
