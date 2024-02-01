@@ -5,12 +5,16 @@ using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using Unity.Services.Relay;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Scenes.Online
 {
     public class RelayManager : MonoBehaviour
     {
         public static RelayManager Instance;
+
+        public RelayServerData RelayServerData { get; private set; }
+        public bool AmHost { get; private set; }
         
         private void Start()
         {
@@ -27,12 +31,9 @@ namespace Scenes.Online
             {
                 var allocation = await RelayService.Instance.CreateAllocationAsync(3);
                 code = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-                Debug.Log($"Created relay {code} with allocation {allocation.AllocationId}");
-
-                var relayServerData = new RelayServerData(allocation, "dtls");
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-
-                NetworkManager.Singleton.StartHost();
+                RelayServerData = new RelayServerData(allocation, "dtls");
+                AmHost = true;
+                SceneManager.LoadScene("Game");
             }
             catch (RelayServiceException e)
             {
@@ -47,12 +48,9 @@ namespace Scenes.Online
             try
             {
                 var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
-                
-                var relayServerData = new RelayServerData(allocation, "dtls");
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-
-                NetworkManager.Singleton.StartClient();
-                Debug.Log($"Joined relay {joinCode} with allocation {allocation.AllocationId}");
+                RelayServerData = new RelayServerData(allocation, "dtls");
+                AmHost = false;
+                SceneManager.LoadScene("Game");
             }
             catch (RelayServiceException e)
             {

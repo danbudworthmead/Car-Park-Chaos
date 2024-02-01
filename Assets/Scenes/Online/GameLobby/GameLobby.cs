@@ -52,6 +52,11 @@ namespace Scenes.Online.GameLobby
             }
             
             var players = LobbyManager.Instance.GetPlayers();
+
+            if (listParent == null)
+            {
+                return;
+            }
             
             // update panels that already exist
             foreach (Transform child in listParent)
