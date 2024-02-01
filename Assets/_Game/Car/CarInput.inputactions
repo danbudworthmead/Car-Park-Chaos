@@ -35,7 +35,7 @@
             ],
             "bindings": [
                 {
-                    "name": "1D Axis",
+                    "name": "Gamepad 1D Axis",
                     "id": "002f0157-08cf-4d07-903a-65058debeabb",
                     "path": "1DAxis(whichSideWins=1)",
                     "interactions": "",
@@ -57,7 +57,29 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "",
+                    "id": "7f55eb2f-f4d0-4b30-a443-7f6198c56250",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Accelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c573a4dc-7f30-45f6-bc55-ec48d8b9723f",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Accelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Gamepad 1D Axis",
                     "id": "373bd9a5-6478-4c85-a3ce-615312f232ec",
                     "path": "1DAxis",
                     "interactions": "",
@@ -90,7 +112,73 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "WASD 1D Axis",
+                    "id": "70429133-1062-446f-91bf-5952a946e0a3",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "922bd39b-5ac5-455c-bc27-96811b4919f1",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "865b26be-5b91-42c0-b6cd-b8e286af5ca4",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Arrow Keys 1D Axis",
+                    "id": "d08a884b-e011-47a0-81f1-3c10d9759753",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "da9c9acb-9055-49c2-930a-5e044e118a6c",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "319fbe84-4b09-4bd3-8c15-02b2022905c9",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Gamepad 1D Axis",
                     "id": "a3ce1624-56c8-4733-940b-fe90b0deef55",
                     "path": "1DAxis(whichSideWins=1)",
                     "interactions": "",
@@ -110,6 +198,28 @@
                     "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "a9c20f13-dd7d-484f-9893-8fdbfc4279a3",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3348c1a-4c6a-4ac3-a4fd-1ddd8bae7f1d",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
