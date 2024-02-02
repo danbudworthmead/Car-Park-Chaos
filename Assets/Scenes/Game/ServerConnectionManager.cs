@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using _Game.Camera;
+using _Game.Car.Player_Cars;
 using Scenes.Online;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -12,7 +15,10 @@ namespace Scenes.Game
 
         [SerializeField] private Transform wideCamera;
         [SerializeField] private CameraRig cameraRig;
+        [SerializeField] private NetworkObject playerPrefab;
         
+        private Dictionary<ulong, NetworkObject> _players = new();
+
         private void Start()
         {
             Instance = this;
@@ -33,23 +39,28 @@ namespace Scenes.Game
             }
         }
 
-        private void HandleClientConnected(ulong clientId)
+        private async void HandleClientConnected(ulong clientId)
         {
             Debug.Log($"Client connected: {clientId}");
 
-            if (clientId == NetworkManager.Singleton.LocalClientId)
+            if (NetworkManager.Singleton.IsHost)
             {
-                var player = NetworkManager.Singleton.LocalClient.PlayerObject.transform;
-                
-                // move the player car to the correct position
-                player.transform.position = new Vector3(clientId * 5f, 0, 0);
-                player.name = $"Player {clientId}";
-                
-                // we are the local client
-                // enable the camera rig and disable the wide camera
-                wideCamera.gameObject.SetActive(false);
-                cameraRig.SetTarget(player);
-                cameraRig.gameObject.SetActive(true);
+                var playersInLobby = RelayManager.Instance.PlayersInLobby;
+
+                var playerCar = Instantiate(playerPrefab);
+                playerCar.SpawnAsPlayerObject(clientId);
+                while (playerCar.IsSpawned == false)
+                {
+                    await Task.Yield();
+                }
+                _players.Add(clientId, playerCar);
+
+                foreach (var player in _players)
+                {
+                    var playerLobbyData = playersInLobby[(int)player.Key];
+                    player.Value.GetComponent<PlayerData>()
+                        .SetClientRpc(playerLobbyData.Data["PlayerName"].Value);
+                }
             }
         }
 

@@ -34,6 +34,15 @@ namespace _Game.Game_States_Logic
                 case RoundState.Initializing:
                     if (NetworkManager.Singleton.IsHost)
                     {
+                        // check all players have a car
+                        foreach (var client in NetworkManager.Singleton.ConnectedClients)
+                        {
+                            if (client.Value.PlayerObject == null)
+                            {
+                                return;
+                            }
+                        }
+                        
                         // teleport all players to their starting positions
                         foreach (var client in NetworkManager.Singleton.ConnectedClients)
                         {

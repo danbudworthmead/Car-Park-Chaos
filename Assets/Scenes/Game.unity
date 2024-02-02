@@ -1144,8 +1144,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 941584289}
-    PlayerPrefab: {fileID: 2327034746865499059, guid: c9d372fdac95f994a9530fb516147cb5,
-      type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 154760dfca1ed184e85bd5c76fba4f65, type: 2}
@@ -1640,6 +1639,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wideCamera: {fileID: 961739753}
   cameraRig: {fileID: 1666782391}
+  playerPrefab: {fileID: -4091858113800471199, guid: c9d372fdac95f994a9530fb516147cb5,
+    type: 3}
 --- !u!4 &1231714402
 Transform:
   m_ObjectHideFlags: 0
