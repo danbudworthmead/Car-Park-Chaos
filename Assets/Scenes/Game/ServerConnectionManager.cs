@@ -6,13 +6,17 @@ using UnityEngine;
 
 namespace Scenes.Game
 {
-    public class GameManager : MonoBehaviour
+    public class ServerConnectionManager : MonoBehaviour
     {
+        public static ServerConnectionManager Instance;
+
         [SerializeField] private Transform wideCamera;
         [SerializeField] private CameraRig cameraRig;
         
         private void Start()
         {
+            Instance = this;
+            
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(RelayManager.Instance.RelayServerData);
 
             NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
@@ -47,7 +51,6 @@ namespace Scenes.Game
                 cameraRig.SetTarget(player);
                 cameraRig.gameObject.SetActive(true);
             }
-
         }
 
         private void HandleServerStarted()
