@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using _Game.Car.Player_Cars;
 using Scenes.Online;
 using Unity.Netcode;
 using UnityEngine;
@@ -7,7 +9,7 @@ using UnityEngine;
 namespace _Game.Game_States_Logic
 {
     public class MatchManager : NetworkBehaviour
-    {
+    {   
         [SerializeField] private NetworkObject roundLogicPrefab;
         private RoundManager _currentRound;
         
@@ -54,7 +56,6 @@ namespace _Game.Game_States_Logic
                         {
                             if (_currentRound.RoundState == RoundManager.RoundStates.GameOver)
                             {
-                                
                                 _currentRound.GetComponent<NetworkObject>().Despawn();
                                 Destroy(_currentRound.gameObject);
                                 _currentRound = null;

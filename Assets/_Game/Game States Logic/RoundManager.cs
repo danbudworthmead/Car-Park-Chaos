@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game.Car;
 using _Game.Car_Park;
+using _Game.Car.Player_Cars;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 namespace _Game.Game_States_Logic
@@ -71,11 +73,24 @@ namespace _Game.Game_States_Logic
                     // wait until all spaces have been taken
                     if (!AnyFreeSpaces())
                     {
+                        var players = FindObjectsOfType<PlayerState>().ToList();
+                    
+                        // remove all players in parking spaces
+                        foreach (var space in _parkingSpaces)
+                        {
+                            players.Remove(space.CarInSpace.GetComponent<PlayerState>());
+                        }
+                    
+                        // kill all remaining players
+                        foreach (var player in players)
+                        {
+                            player.SetDeadClientRpc();
+                        }
+                        
                         SetStateClientRpc(RoundStates.GameOver);
                     }
                     break;
                 case RoundStates.GameOver:
-                    // knockout the players who are not in a parking space
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -101,11 +116,17 @@ namespace _Game.Game_States_Logic
         private void TeleportPlayers()
         {
             // teleport all players to their starting positions
-            foreach (var client in NetworkManager.Singleton.ConnectedClients)
+            foreach (var client in NetworkManager.Singleton.ConnectedClients.Values.Select(c => c.PlayerObject))
             {
-                var physics = client.Value.PlayerObject.GetComponent<CarPhysics>();
-                physics.SetPositionClientRpc(new Vector3(client.Key * 5f, 0, 0));
+                var physics = client.GetComponent<CarPhysics>();
+                physics.SetPositionClientRpc(new Vector3(client.OwnerClientId * 5f, 0, 0));
             }
+        }
+
+        public IEnumerable<PlayerState> AlivePlayers()
+        {
+            return FindObjectsOfType<PlayerState>()
+                .Where(p => p.IsAlive);
         }
 
         private void FreeSpaces()
