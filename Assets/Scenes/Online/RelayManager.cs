@@ -33,7 +33,7 @@ namespace Scenes.Online
                 RelayServerData = new RelayServerData(allocation, "dtls");
                 AmHost = true;
                 PlayersInLobby = playersInLobby;
-                SceneManager.LoadScene("Game");
+                SceneManager.LoadScene("Level001");
             }
             catch (RelayServiceException e)
             {
@@ -50,7 +50,7 @@ namespace Scenes.Online
                 var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
                 RelayServerData = new RelayServerData(allocation, "dtls");
                 AmHost = false;
-                SceneManager.LoadScene("Game");
+                SceneManager.LoadScene("Level001");
             }
             catch (RelayServiceException e)
             {

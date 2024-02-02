@@ -76,7 +76,8 @@ namespace _Game.Game_States_Logic
                         {
                             var players = NetworkManager.Singleton.ConnectedClients.Values
                                 .Select(c => c.PlayerObject.GetComponent<PlayerState>());
-                            if (players.Count(p => p.IsAlive) > 1)
+                            var playerStates = players as PlayerState[] ?? players.ToArray();
+                            if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
                             {
                                 _currentRound = InitRound();
                             } 
