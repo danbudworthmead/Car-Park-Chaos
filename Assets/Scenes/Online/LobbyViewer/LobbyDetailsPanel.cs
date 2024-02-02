@@ -21,8 +21,10 @@ namespace Scenes.Online
 
         public async void Join()
         {
-            await LobbyManager.Instance.JoinLobby(name);
-            FindObjectOfType<LobbyPanel>().JoinedLobby();
+            if (await LobbyManager.Instance.JoinLobby(name))
+            {
+                FindObjectOfType<LobbyPanel>().JoinedLobby();
+            }
         }
     }
 }

@@ -87,6 +87,8 @@ namespace _Game.Game_States_Logic
                         }
                         break;
                     case MatchState.GameOver:
+                        // stop the server and disconnect all clients
+                        NetworkManager.Singleton.Shutdown();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

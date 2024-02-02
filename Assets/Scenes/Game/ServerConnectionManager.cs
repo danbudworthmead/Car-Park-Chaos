@@ -9,6 +9,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Relay;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Scenes.Game
 {
@@ -17,13 +18,15 @@ namespace Scenes.Game
         [SerializeField] private NetworkObject playerPrefab;
         
         private Dictionary<ulong, NetworkObject> _players = new();
+        private bool _hasConnected = false;
 
         private async void Start()
         {
             NetworkManager.Singleton.OnServerStarted += HandleServerStarted;
             NetworkManager.Singleton.OnClientStarted += HandleClientStarted;
             NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-            
+
+
             if (RelayManager.Instance == null)
             {
                 // we're in single player mode
@@ -59,7 +62,6 @@ namespace Scenes.Game
 
             if (NetworkManager.Singleton.IsHost)
             {
-
                 var playerCar = Instantiate(playerPrefab);
                 playerCar.SpawnAsPlayerObject(clientId);
                 while (playerCar.IsSpawned == false)
@@ -79,6 +81,11 @@ namespace Scenes.Game
                     }
                 }
             }
+
+            if (NetworkManager.Singleton.LocalClientId == clientId)
+            {
+                _hasConnected = true;
+            }
         }
 
         private void HandleServerStarted()
@@ -87,6 +94,15 @@ namespace Scenes.Game
 
         private void HandleClientStarted()
         {
+        }
+
+        private void Update()
+        {
+            if (_hasConnected && !NetworkManager.Singleton.IsConnectedClient)
+            {
+                // if we disconnect from the server, go back to the online menu
+                SceneManager.LoadScene("Online");
+            }
         }
     }
 }
