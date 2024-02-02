@@ -3,6 +3,7 @@ using Scenes.Online;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using TMPro;
 
 namespace Scenes.Game
 {
@@ -44,6 +45,7 @@ namespace Scenes.Game
                 // move the player car to the correct position
                 player.transform.position = new Vector3(clientId * 5f, 0, 0);
                 player.name = $"Player {clientId}";
+                player.GetComponentInChildren<Nametag>().Setup();
                 
                 // we are the local client
                 // enable the camera rig and disable the wide camera
