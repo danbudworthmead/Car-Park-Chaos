@@ -380,6 +380,8 @@ GameObject:
   m_Component:
   - component: {fileID: 149798132198683705}
   - component: {fileID: -4091858113800471199}
+  - component: {fileID: 5362116877583396184}
+  - component: {fileID: 8336040802160788128}
   - component: {fileID: 8306680239813908818}
   - component: {fileID: 9182341263867756690}
   - component: {fileID: 9096301266641702034}
@@ -444,6 +446,30 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &5362116877583396184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2327034746865499059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d050ea281d5e04d85ae12ee9451878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8336040802160788128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2327034746865499059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b91eacc1b706e54e81bf2d3ac4b41cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8306680239813908818
 MonoBehaviour:
   m_ObjectHideFlags: 0

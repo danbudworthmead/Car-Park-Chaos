@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using IngameDebugConsole;
 using Unity.Networking.Transport.Relay;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;

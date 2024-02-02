@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IngameDebugConsole;
-using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Scenes.Online
 {
@@ -25,6 +26,7 @@ namespace Scenes.Online
         private int _countdownTimer = 0;
         private bool _hasStarted = false;
         private bool _startedJoiningRelay = false;
+        private float _timeSinceLastRefresh = 0f;
 
         private void Awake()
         {
@@ -33,7 +35,11 @@ namespace Scenes.Online
 
         private async void Start()
         {
-            _playerName = "BadDriver" + UnityEngine.Random.Range(0, 999);
+            await UnityServices.InitializeAsync();
+            
+            if (AuthenticationService.Instance.IsSignedIn) return;
+            
+            _playerName = "BadDriver" + Random.Range(0, 999);
             
             DebugLogConsole.AddCommandInstance("createLobby", "Create a lobby", "CreateLobby", this);
             DebugLogConsole.AddCommandInstance("listLobbies", "List lobbies", "ListLobbies", this);
@@ -41,8 +47,6 @@ namespace Scenes.Online
             DebugLogConsole.AddCommandInstance("startLobby", "Start a lobby", "StartLobby", this);
             
             Debug.Log(_playerName);
-                        
-            await UnityServices.InitializeAsync();
 
             AuthenticationService.Instance.SignedIn += () =>
             {
@@ -185,7 +189,7 @@ namespace Scenes.Online
             }
             catch (LobbyServiceException e)
             {
-                Debug.LogError(e);
+                Debug.LogWarning(e);
             }
 
             return null;
@@ -258,16 +262,27 @@ namespace Scenes.Online
             return _joinedLobby.Data[KeyCountdown].Value;
         }
 
-        public async Task JoinLobby(string id)
+        public async Task<bool> JoinLobby(string id)
         {
-            _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(id, new JoinLobbyByIdOptions
+            try
             {
-                Player = GetPlayer()
-            });
+                _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(id, new JoinLobbyByIdOptions
+                {
+                    Player = GetPlayer()
+                });
+                return true;
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.LogWarning(e);
+                return false;
+            }
         }
 
         public async Task RefreshLobby()
         {
+            if (Time.time  - _timeSinceLastRefresh < 1f) return;
+            _timeSinceLastRefresh = Time.time;
             _joinedLobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
             if (_joinedLobby.Data[KeyStartGame].Value != "0")
             {
