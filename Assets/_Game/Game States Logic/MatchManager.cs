@@ -19,6 +19,7 @@ namespace _Game.Game_States_Logic
         }
         
         private MatchState _matchState;
+        private int _roundNumber;
 
         private void Start()
         {
@@ -45,11 +46,24 @@ namespace _Game.Game_States_Logic
 
                         if (allConnected)
                         {
-                            Init();
                             SetMatchStateClientRpc(MatchState.Playing);
                         }
                         break;
                     case MatchState.Playing:
+                        if (_currentRound)
+                        {
+                            if (_currentRound.RoundState == RoundManager.RoundStates.GameOver)
+                            {
+                                
+                                _currentRound.GetComponent<NetworkObject>().Despawn();
+                                Destroy(_currentRound.gameObject);
+                                _currentRound = null;
+                            }
+                        }
+                        else
+                        {
+                            _currentRound = InitRound();
+                        }
                         break;
                     case MatchState.GameOver:
                         break;
@@ -59,18 +73,21 @@ namespace _Game.Game_States_Logic
             }
         }
 
-        private void Init()
+        private RoundManager InitRound()
         {
             // spawn the round logic
             var obj = Instantiate(roundLogicPrefab);
             obj.Spawn();
-            _currentRound = obj.GetComponent<RoundManager>();
+            _roundNumber++;
+            Debug.Log($"Round {_roundNumber} started");
+            return obj.GetComponent<RoundManager>();
         }
 
         [ClientRpc]
         private void SetMatchStateClientRpc(MatchState matchState)
         {
             _matchState = matchState;
+            Debug.Log($"Match state: {_matchState}");
         }
     }
 }
