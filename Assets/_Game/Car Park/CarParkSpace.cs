@@ -8,6 +8,7 @@ namespace _Game.Car_Park
     public class CarParkSpace : NetworkBehaviour
     {
         [SerializeField] private BoxCollider collider;
+        [SerializeField] private GameObject npcCar;
         
         private CarPhysics _carInSpace;
 
@@ -63,6 +64,14 @@ namespace _Game.Car_Park
                     .First(client => client.Key == carOwnerId).Value.PlayerObject;
                 _carInSpace = carObj.GetComponent<CarPhysics>();
             }
+        }
+
+        [ClientRpc]
+        public void SetFreeClientRpc()
+        {
+            _carInSpace = null;
+            collider.isTrigger = true;
+            Destroy(npcCar);
         }
     }
 }

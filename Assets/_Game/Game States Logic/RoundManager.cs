@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using _Game.Car;
+using _Game.Car_Park;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -49,6 +51,18 @@ namespace _Game.Game_States_Logic
                             var physics = client.Value.PlayerObject.GetComponent<CarPhysics>();
                             physics.SetPositionClientRpc(new Vector3(client.Key * 5f, 0, 0));
                         }
+                        
+                        // free up n-1 car parking spaces
+                        var parkingSpaces = FindObjectsOfType<CarParkSpace>().ToList();
+                        var numberOfSpacesToFree = NetworkManager.Singleton.ConnectedClients.Count - 1;
+                        numberOfSpacesToFree = Mathf.Clamp(numberOfSpacesToFree, 1, parkingSpaces.Count);
+                        parkingSpaces.Shuffle();
+                        
+                        for (var i = 0; i < numberOfSpacesToFree; i++)
+                        {
+                            parkingSpaces[i].SetFreeClientRpc();
+                        }
+                        
                         SetStateClientRpc(RoundState.Countdown);
                     }
                     break;
