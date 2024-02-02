@@ -79,6 +79,7 @@ namespace Scenes.Game
                         var playerLobbyData = playersInLobby[(int)player.Key];
                         player.Value.GetComponent<PlayerData>()
                             .SetClientRpc(playerLobbyData.Data["PlayerName"].Value);
+                        player.Value.GetComponentInChildren<Nametag>().Setup();
                     }
                 }
             }
