@@ -40,8 +40,8 @@ namespace _Game.Game_States_Logic
                 {
                     case MatchState.Initializing:
                         // check if all players are connected
-                        var allConnected = RelayManager.Instance.PlayersInLobby.Count ==
-                                           NetworkManager.Singleton.ConnectedClients.Count();
+                        var allConnected = RelayManager.Instance == null
+                                           || RelayManager.Instance.PlayersInLobby.Count == NetworkManager.Singleton.ConnectedClients.Count();
 
                         if (allConnected)
                         {
