@@ -45,11 +45,8 @@ namespace _Game.Game_States_Logic
 
                         if (allConnected)
                         {
+                            Init();
                             SetMatchStateClientRpc(MatchState.Playing);
-                            
-                            var obj = Instantiate(roundLogicPrefab);
-                            obj.Spawn();
-                            _currentRound = obj.GetComponent<RoundManager>();
                         }
                         break;
                     case MatchState.Playing:
@@ -60,6 +57,14 @@ namespace _Game.Game_States_Logic
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        private void Init()
+        {
+            // spawn the round logic
+            var obj = Instantiate(roundLogicPrefab);
+            obj.Spawn();
+            _currentRound = obj.GetComponent<RoundManager>();
         }
 
         [ClientRpc]
