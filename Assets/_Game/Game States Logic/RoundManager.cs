@@ -10,7 +10,7 @@ namespace _Game.Game_States_Logic
 {
     public class RoundManager : NetworkBehaviour
     {
-        public enum RoundState
+        public enum RoundStates
         {
             Initializing,
             Countdown,
@@ -18,12 +18,12 @@ namespace _Game.Game_States_Logic
             GameOver,
         }
         
-        private RoundState _roundState;
+        public RoundStates RoundState { get; private set; }
         private List<CarParkSpace> _parkingSpaces = new();
 
         private void Start()
         {
-            _roundState = RoundState.Initializing;
+            RoundState = RoundStates.Initializing;
         }
 
         private void FixedUpdate()
@@ -50,9 +50,9 @@ namespace _Game.Game_States_Logic
         // ReSharper disable Unity.PerformanceAnalysis
         private void HostLogic()
         {
-            switch (_roundState)
+            switch (RoundState)
             {
-                case RoundState.Initializing:
+                case RoundStates.Initializing:
                     // check all players have a car
                     if (!AllPlayersReady())
                     {
@@ -61,20 +61,20 @@ namespace _Game.Game_States_Logic
 
                     TeleportPlayers();
                     FreeSpaces();
-                    SetStateClientRpc(RoundState.Countdown);
+                    SetStateClientRpc(RoundStates.Countdown);
                     break;
-                case RoundState.Countdown:
+                case RoundStates.Countdown:
                     // do a 3 second countdown
-                    SetStateClientRpc(RoundState.Playing);
+                    SetStateClientRpc(RoundStates.Playing);
                     break;
-                case RoundState.Playing:
+                case RoundStates.Playing:
                     // wait until all spaces have been taken
                     if (!AnyFreeSpaces())
                     {
-                        SetStateClientRpc(RoundState.GameOver);
+                        SetStateClientRpc(RoundStates.GameOver);
                     }
                     break;
-                case RoundState.GameOver:
+                case RoundStates.GameOver:
                     // knockout the players who are not in a parking space
                     break;
                 default:
@@ -125,10 +125,10 @@ namespace _Game.Game_States_Logic
         }
 
         [ClientRpc]
-        public void SetStateClientRpc(RoundState state)
+        public void SetStateClientRpc(RoundStates states)
         {
-            _roundState = state;
-            Debug.Log($"Round state is now {_roundState}");
+            RoundState = states;
+            Debug.Log($"Round state is now {RoundState}");
         }
     }
 }
