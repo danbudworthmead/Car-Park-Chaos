@@ -9,6 +9,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Relay;
 using UnityEngine;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 namespace Scenes.Game
@@ -78,6 +79,7 @@ namespace Scenes.Game
                         var playerLobbyData = playersInLobby[(int)player.Key];
                         player.Value.GetComponent<PlayerData>()
                             .SetClientRpc(playerLobbyData.Data["PlayerName"].Value);
+                        player.Value.GetComponentInChildren<Nametag>().Setup();
                     }
                 }
             }
