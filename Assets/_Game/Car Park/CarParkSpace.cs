@@ -2,6 +2,7 @@ using System.Linq;
 using _Game.Car;
 using Unity.Netcode;
 using UnityEngine;
+#pragma warning disable CS0108, CS0114
 
 namespace _Game.Car_Park
 {
@@ -11,6 +12,7 @@ namespace _Game.Car_Park
         [SerializeField] private GameObject npcCar;
         
         private CarPhysics _carInSpace;
+        public bool IsFree => _carInSpace == null;
 
         private void Update()
         {
@@ -60,9 +62,8 @@ namespace _Game.Car_Park
             }
             else
             {
-                var carObj = NetworkManager.Singleton.ConnectedClients
-                    .First(client => client.Key == carOwnerId).Value.PlayerObject;
-                _carInSpace = carObj.GetComponent<CarPhysics>();
+                _carInSpace = FindObjectsOfType<CarPhysics>()
+                    .First(car => car.OwnerClientId == carOwnerId);
             }
         }
 
