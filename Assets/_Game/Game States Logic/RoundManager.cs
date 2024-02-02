@@ -73,18 +73,19 @@ namespace _Game.Game_States_Logic
                     // wait until all spaces have been taken
                     if (!AnyFreeSpaces())
                     {
-                        var players = FindObjectsOfType<PlayerState>().ToList();
-                    
+                        var playerIds = NetworkManager.Singleton.ConnectedClients.Keys.ToList();
+                        
                         // remove all players in parking spaces
                         foreach (var space in _parkingSpaces)
                         {
-                            players.Remove(space.CarInSpace.GetComponent<PlayerState>());
+                            playerIds.Remove(space.CarInSpace.OwnerClientId);
                         }
                     
                         // kill all remaining players
-                        foreach (var player in players)
+                        foreach (var player in playerIds)
                         {
-                            player.SetDeadClientRpc();
+                            NetworkManager.Singleton.ConnectedClients[player]
+                                .PlayerObject.GetComponent<PlayerState>().SetDeadClientRpc();
                         }
                         
                         SetStateClientRpc(RoundStates.GameOver);
