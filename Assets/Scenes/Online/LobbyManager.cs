@@ -228,7 +228,7 @@ namespace Scenes.Online
                 try
                 {
                     _startedJoiningRelay = true;
-                    var code = await RelayManager.Instance.CreateRelay();
+                    var code = await RelayManager.Instance.CreateRelay(_joinedLobby.Players);
                     
                     var lobby = await Lobbies.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
                     {

@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IngameDebugConsole;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
+using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,14 +16,14 @@ namespace Scenes.Online
         public RelayServerData RelayServerData { get; private set; }
         public bool AmHost { get; private set; }
         
+        public List<Player> PlayersInLobby { get; private set; } = new();
+        
         private void Start()
         {
             Instance = this;
-            DebugLogConsole.AddCommandInstance("createRelay", "Create a relay", "CreateRelay", this);
-            DebugLogConsole.AddCommandInstance("joinRelay", "Join a relay", "JoinRelay", this);
         }
 
-        public async Task<string> CreateRelay()
+        public async Task<string> CreateRelay(List<Player> playersInLobby)
         {
             var code = "ERR";
             
@@ -33,6 +33,7 @@ namespace Scenes.Online
                 code = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
                 RelayServerData = new RelayServerData(allocation, "dtls");
                 AmHost = true;
+                PlayersInLobby = playersInLobby;
                 SceneManager.LoadScene("Game");
             }
             catch (RelayServiceException e)
