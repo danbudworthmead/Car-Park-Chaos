@@ -1,5 +1,6 @@
 using System.Linq;
 using _Game.Car;
+using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
 #pragma warning disable CS0108, CS0114
@@ -11,19 +12,19 @@ namespace _Game.Car_Park
         [SerializeField] private BoxCollider collider;
         [SerializeField] private GameObject npcCar;
         
-        private CarPhysics _carInSpace;
-        public bool IsFree => _carInSpace == null;
+        public CarPhysics CarInSpace { get; private set; }
+        public bool IsFree => CarInSpace == null;
 
         private void Update()
         {
-            GetComponentInChildren<MeshRenderer>().material.color = _carInSpace ? Color.green : Color.red;
+            GetComponentInChildren<MeshRenderer>().material.color = CarInSpace ? Color.green : Color.red;
             
             if (NetworkManager.Singleton.IsHost)
             {
-                if (_carInSpace)
+                if (CarInSpace)
                 {
                     // check all wheels are in the parking space
-                    var wheels = _carInSpace.GetComponentsInChildren<WheelCollider>();
+                    var wheels = CarInSpace.GetComponentsInChildren<WheelCollider>();
                     var inSpace = wheels.All(wheel => collider.bounds.Contains(wheel.transform.position));
                     if (!inSpace)
                     {
@@ -38,8 +39,8 @@ namespace _Game.Car_Park
         {
             if (NetworkManager.Singleton.IsHost)
             {
-                var car = other.GetComponent<CarPhysics>();
-                if (car)
+                var player = other.GetComponent<PlayerState>();
+                if (player && player.IsAlive)
                 {
                     // check all wheels are in the parking space
                     var wheels = other.GetComponentsInChildren<WheelCollider>();
@@ -47,7 +48,7 @@ namespace _Game.Car_Park
                     if (inSpace)
                     {
                         // player has parked
-                        SetCarInSpaceClientRpc(car.OwnerClientId);
+                        SetCarInSpaceClientRpc(player.OwnerClientId);
                     }
                 }
             }
@@ -58,11 +59,11 @@ namespace _Game.Car_Park
         {
             if (carOwnerId == ulong.MaxValue)
             {
-                _carInSpace = null;
+                CarInSpace = null;
             }
             else
             {
-                _carInSpace = FindObjectsOfType<CarPhysics>()
+                CarInSpace = FindObjectsOfType<CarPhysics>()
                     .First(car => car.OwnerClientId == carOwnerId);
             }
         }
@@ -70,7 +71,7 @@ namespace _Game.Car_Park
         [ClientRpc]
         public void SetFreeClientRpc()
         {
-            _carInSpace = null;
+            CarInSpace = null;
             collider.isTrigger = true;
             Destroy(npcCar);
         }

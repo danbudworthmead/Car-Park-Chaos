@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using _Game.Car.Player_Cars;
 using Scenes.Online;
 using Unity.Netcode;
 using UnityEngine;
@@ -7,7 +9,7 @@ using UnityEngine;
 namespace _Game.Game_States_Logic
 {
     public class MatchManager : NetworkBehaviour
-    {
+    {   
         [SerializeField] private NetworkObject roundLogicPrefab;
         private RoundManager _currentRound;
         
@@ -41,20 +43,30 @@ namespace _Game.Game_States_Logic
                 {
                     case MatchState.Initializing:
                         // check if all players are connected
-                        var allConnected = RelayManager.Instance == null
-                                           || RelayManager.Instance.PlayersInLobby.Count == NetworkManager.Singleton.ConnectedClients.Count();
-
-                        if (allConnected)
+                        // ReSharper disable once ReplaceWithSingleAssignment.True
+                        if (RelayManager.Instance.PlayersInLobby.Count >
+                            NetworkManager.Singleton.ConnectedClients.Count)
                         {
-                            SetMatchStateClientRpc(MatchState.Playing);
+                            return;
                         }
+
+                        // check all players have cars
+                        foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
+                        {
+                            if (client.PlayerObject == null)
+                                return;
+
+                            if (client.PlayerObject.GetComponent<PlayerState>() == null)
+                                return;
+                        }
+
+                        SetMatchStateClientRpc(MatchState.Playing);
                         break;
                     case MatchState.Playing:
                         if (_currentRound)
                         {
                             if (_currentRound.RoundState == RoundManager.RoundStates.GameOver)
                             {
-                                
                                 _currentRound.GetComponent<NetworkObject>().Despawn();
                                 Destroy(_currentRound.gameObject);
                                 _currentRound = null;
@@ -62,7 +74,16 @@ namespace _Game.Game_States_Logic
                         }
                         else
                         {
-                            _currentRound = InitRound();
+                            var players = NetworkManager.Singleton.ConnectedClients.Values
+                                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
+                            if (players.Count(p => p.IsAlive) > 1)
+                            {
+                                _currentRound = InitRound();
+                            } 
+                            else
+                            {
+                                SetMatchStateClientRpc(MatchState.GameOver);
+                            }
                         }
                         break;
                     case MatchState.GameOver:
