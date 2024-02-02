@@ -2002,11 +2002,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rig
       objectReference: {fileID: 0}
-    - target: {fileID: 9048368652425613377, guid: 050a2b065481afb4d858739c6256b2b1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
