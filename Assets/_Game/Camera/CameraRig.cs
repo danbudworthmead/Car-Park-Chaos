@@ -14,8 +14,7 @@ namespace _Game.Camera
             // follow the target but keep upright
             transform.position = _target.position;
             var newRot = Quaternion.Euler(0, _target.eulerAngles.y, 0);
-            // smoothing is a bit choppy
-            transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * cameraMoveSpeed);
+            transform.rotation = newRot;
         }
         
         public void SetTarget(Transform target)
