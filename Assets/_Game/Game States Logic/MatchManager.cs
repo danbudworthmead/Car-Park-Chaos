@@ -9,10 +9,13 @@ using UnityEngine;
 namespace _Game.Game_States_Logic
 {
     public class MatchManager : NetworkBehaviour
-    {   
+    {
         [SerializeField] private NetworkObject roundLogicPrefab;
-        private RoundManager _currentRound;
-        
+        public float RoundDuration = 60;
+
+        public RoundManager CurrentRound { get; private set; }
+        public static MatchManager Singleton { get; private set; }
+
         enum MatchState
         {
             Initializing,
@@ -25,18 +28,19 @@ namespace _Game.Game_States_Logic
 
         private void Start()
         {
+            Singleton = this;
             _matchState = MatchState.Initializing;
         }
 
         private void Update()
         {
-            if (_currentRound
-                && _currentRound.transform.parent == null
-                && _currentRound.IsSpawned)
+            if (CurrentRound
+                && CurrentRound.transform.parent == null
+                && CurrentRound.IsSpawned)
             {
-                _currentRound.transform.SetParent(transform);
+                CurrentRound.transform.SetParent(transform);
             }
-            
+
             if (NetworkManager.Singleton.IsHost)
             {
                 switch (_matchState)
@@ -64,13 +68,13 @@ namespace _Game.Game_States_Logic
                         SetMatchStateClientRpc(MatchState.Playing);
                         break;
                     case MatchState.Playing:
-                        if (_currentRound)
+                        if (CurrentRound)
                         {
-                            if (_currentRound.RoundState == RoundManager.RoundStates.GameOver)
+                            if (CurrentRound.RoundState == RoundManager.RoundStates.GameOver)
                             {
-                                _currentRound.GetComponent<NetworkObject>().Despawn();
-                                Destroy(_currentRound.gameObject);
-                                _currentRound = null;
+                                CurrentRound.GetComponent<NetworkObject>().Despawn();
+                                Destroy(CurrentRound.gameObject);
+                                CurrentRound = null;
                             }
                         }
                         else
@@ -80,7 +84,7 @@ namespace _Game.Game_States_Logic
                             var playerStates = players as PlayerState[] ?? players.ToArray();
                             if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
                             {
-                                _currentRound = InitRound();
+                                CurrentRound = InitRound();
                             } 
                             else
                             {
@@ -96,6 +100,10 @@ namespace _Game.Game_States_Logic
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            if (CurrentRound == null)
+                CurrentRound = GetComponentInChildren<RoundManager>();
+
         }
 
         private RoundManager InitRound()

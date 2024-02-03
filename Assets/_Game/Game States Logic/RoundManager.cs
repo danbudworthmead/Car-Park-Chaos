@@ -21,6 +21,7 @@ namespace _Game.Game_States_Logic
         }
         
         public RoundStates RoundState { get; private set; }
+        public float timer;
         private List<CarParkSpace> _parkingSpaces = new();
 
         private void Start()
@@ -35,18 +36,22 @@ namespace _Game.Game_States_Logic
                 return;
             }
 
-            if (NetworkManager.Singleton.IsHost)
-            {
+            ClientLogic();
+            if (NetworkManager.Singleton.IsHost) 
                 HostLogic();
-            }
-            else
-            {
-                ClientLogic();
-            }
-        }
+        }   
 
         private void ClientLogic()
         {
+            switch (RoundState)
+            {
+                case RoundStates.Initializing:
+                    timer = MatchManager.Singleton.RoundDuration;
+                    break;
+                case RoundStates.Playing:
+                    timer -= Time.deltaTime;
+                    break;
+            }
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -70,15 +75,18 @@ namespace _Game.Game_States_Logic
                     SetStateClientRpc(RoundStates.Playing);
                     break;
                 case RoundStates.Playing:
-                    // wait until all spaces have been taken
-                    if (!AnyFreeSpaces())
+                    // wait until all spaces have been taken or timer has ran out
+                    if (!AnyFreeSpaces() || timer <= 0.0f)
                     {
                         var playerIds = NetworkManager.Singleton.ConnectedClients.Keys.ToList();
                         
-                        // remove all players in parking spaces
-                        foreach (var space in _parkingSpaces)
+                        // remove all players in parking spaces (if reason of loss is because of no more free spaces)
+                        if(!AnyFreeSpaces())
                         {
-                            playerIds.Remove(space.CarInSpace.OwnerClientId);
+                            foreach (var space in _parkingSpaces)   
+                            {
+                                playerIds.Remove(space.CarInSpace.OwnerClientId);
+                            }
                         }
                     
                         // kill all remaining players

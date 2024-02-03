@@ -18959,6 +18959,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7639648213082654863, guid: d4a0dfbfce733ae49a81f0db3180c973,
         type: 3}
+      propertyPath: RoundDuration
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639648213082654863, guid: d4a0dfbfce733ae49a81f0db3180c973,
+        type: 3}
       propertyPath: roundLogicPrefab
       value: 
       objectReference: {fileID: -9117375190318734683, guid: 4eeac9fdd5dca40418394d37443a9584,
@@ -36862,6 +36867,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5212930425414880048, guid: e021629e0ea76134fa71535a66b62abe,
+        type: 3}
+      propertyPath: uiPrefab
+      value: 
+      objectReference: {fileID: 6083143078462208105, guid: 088ee3010c13652469d6782088b396e0,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
