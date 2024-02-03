@@ -6,9 +6,13 @@ namespace _Game.Car.Player_Cars
 {
     public class PlayerState : NetworkBehaviour
     {
+        [SerializeField] private Rigidbody carRigidbody;
+        [SerializeField] private CarPhysics physics;
+
         public enum PlayerStates
         {
             Alive,
+            Parked,
             Dead,
         }
         
@@ -21,8 +25,18 @@ namespace _Game.Car.Player_Cars
         public void SetAliveClientRpc()
         {
             _state = PlayerStates.Alive;
+            carRigidbody.isKinematic = false;
         }
-        
+
+        [ClientRpc]
+        public void SetParkedClientRpc()
+        {
+            _state = PlayerStates.Parked;
+            // Freeze car? (probably not the best method but)
+            carRigidbody.isKinematic = true;
+            Debug.Log($"{OwnerClientId} has parked");
+        }
+
         [ClientRpc]
         public void SetDeadClientRpc()
         {

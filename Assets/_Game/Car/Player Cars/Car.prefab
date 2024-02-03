@@ -454,6 +454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d050ea281d5e04d85ae12ee9451878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  carRigidbody: {fileID: 5055295808956164038}
+  physics: {fileID: 8306680239813908818}
 --- !u!114 &8336040802160788128
 MonoBehaviour:
   m_ObjectHideFlags: 0
