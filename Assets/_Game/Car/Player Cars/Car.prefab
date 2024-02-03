@@ -575,11 +575,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2327034746865499059}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cb17e27b3a288846ad24d9c25d8ef15, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c36d6977b75dfc43871ed157e48dcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPhysics: {fileID: 5055295808956164038}
-  carAudio: {fileID: 2179910805473557653}
+  carPhysics: {fileID: 0}
+  carAudio: {fileID: 0}
 --- !u!114 &9182341263867756690
 MonoBehaviour:
   m_ObjectHideFlags: 0
