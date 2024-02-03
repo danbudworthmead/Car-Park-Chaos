@@ -12,12 +12,11 @@ namespace _Game.Car.Player_Cars
         public enum PlayerStates
         {
             Alive,
-            Parked,
             Dead,
         }
         
         private PlayerStates _state = PlayerStates.Alive;
-        
+        public bool _isParked = false;
         public bool IsAlive => _state == PlayerStates.Alive;
         public bool IsDead => _state == PlayerStates.Dead;
 
@@ -25,15 +24,13 @@ namespace _Game.Car.Player_Cars
         public void SetAliveClientRpc()
         {
             _state = PlayerStates.Alive;
-            carRigidbody.isKinematic = false;
+            carRigidbody.constraints = RigidbodyConstraints.None;
         }
-
-        [ClientRpc]
-        public void SetParkedClientRpc()
+        public void SetParked()
         {
-            _state = PlayerStates.Parked;
+            _isParked = true;
             // Freeze car? (probably not the best method but)
-            carRigidbody.isKinematic = true;
+            carRigidbody.constraints = RigidbodyConstraints.FreezeAll;
             Debug.Log($"{OwnerClientId} has parked");
         }
 
