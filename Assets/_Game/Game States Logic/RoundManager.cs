@@ -5,8 +5,8 @@ using _Game.Car;
 using _Game.Car_Park;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Game.Game_States_Logic
 {
@@ -116,11 +116,16 @@ namespace _Game.Game_States_Logic
 
         private void TeleportPlayers()
         {
-            // teleport all players to their starting positions
-            foreach (var client in NetworkManager.Singleton.ConnectedClients.Values.Select(c => c.PlayerObject))
+            Transform spawnLocations = GameObject.FindWithTag("SpawnLocations").transform;
+            var clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToList();
+            clientIds.Shuffle();
+
+            for (int i = 0; i < clientIds.Count; ++i)
             {
+                var client = NetworkManager.Singleton.ConnectedClients[(ulong)i].PlayerObject;
                 var physics = client.GetComponent<CarPhysics>();
-                physics.SetPositionClientRpc(new Vector3(client.OwnerClientId * 5f, 0, 0));
+                var spawnLocation = spawnLocations.GetChild(i);
+                physics.SetPositionClientRpc(spawnLocation.position);
             }
         }
 
