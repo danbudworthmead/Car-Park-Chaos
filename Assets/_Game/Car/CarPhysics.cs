@@ -88,5 +88,11 @@ namespace _Game.Car
         {
             transform.position = position;
         }
+
+        [ClientRpc]
+        public void SetRotationClientRpc(Quaternion rotation)
+        {
+            transform.rotation = rotation;
+        }
     }
 }

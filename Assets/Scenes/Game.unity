@@ -1743,6 +1743,11 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2981849772
       objectReference: {fileID: 0}
+    - target: {fileID: 7639648213082654863, guid: d4a0dfbfce733ae49a81f0db3180c973,
+        type: 3}
+      propertyPath: roundLogicPrefab
+      value: 
+      objectReference: {fileID: 1451733411}
     - target: {fileID: 7801326526032757966, guid: d4a0dfbfce733ae49a81f0db3180c973,
         type: 3}
       propertyPath: m_Name
@@ -1803,6 +1808,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4a0dfbfce733ae49a81f0db3180c973, type: 3}
+--- !u!114 &1451733411 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4421025916672025972, guid: d4a0dfbfce733ae49a81f0db3180c973,
+    type: 3}
+  m_PrefabInstance: {fileID: 1451733410}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1613802813
 GameObject:
   m_ObjectHideFlags: 0
