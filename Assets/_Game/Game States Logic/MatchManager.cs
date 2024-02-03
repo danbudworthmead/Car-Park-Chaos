@@ -44,7 +44,8 @@ namespace _Game.Game_States_Logic
                     case MatchState.Initializing:
                         // check if all players are connected
                         // ReSharper disable once ReplaceWithSingleAssignment.True
-                        if (RelayManager.Instance.PlayersInLobby.Count >
+                        if (RelayManager.Instance == null
+                            || RelayManager.Instance.PlayersInLobby.Count >
                             NetworkManager.Singleton.ConnectedClients.Count)
                         {
                             return;
