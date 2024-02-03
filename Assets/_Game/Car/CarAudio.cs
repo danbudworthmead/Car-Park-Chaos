@@ -5,6 +5,8 @@ public class CarAudio : NetworkBehaviour
 {
     private Rigidbody carPhysics;
     private AudioSource carAudio;
+
+    private NetworkVariable<float> pitch = new(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     
     // Start is called before the first frame update
     void Start()
@@ -16,6 +18,10 @@ public class CarAudio : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        carAudio.pitch= 1+carPhysics.velocity.magnitude/10f;
+        if (IsLocalPlayer)
+        {
+            pitch.Value = 1+carPhysics.velocity.magnitude/12f;
+        }
+        carAudio.pitch = pitch.Value;
     }
 }
