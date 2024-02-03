@@ -1,35 +1,38 @@
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 
-public class CarController : NetworkBehaviour
+namespace _Game.Car
 {
-    private CarPhysics _carPhysics;
-
-    private void Awake()
+    public class CarController : NetworkBehaviour
     {
-        _carPhysics = GetComponent<CarPhysics>();
-    }
+        private CarPhysics _carPhysics;
 
-    private void Start()
-    {
-        if (!IsOwner)
+        private void Awake()
         {
-            Destroy(this);
+            _carPhysics = GetComponent<CarPhysics>();
         }
-    }
 
-    public void OnAccelerate(InputValue value)
-    {
-        _carPhysics.SetAcceleration(value.Get<float>());
-    }
+        private void Start()
+        {
+            if (!IsOwner)
+            {
+                Destroy(this);
+            }
+        }
+
+        public void OnAccelerate(InputValue value)
+        {
+            _carPhysics.SetAcceleration(value.Get<float>());
+        }
     
-    public void OnBrake(InputValue value)
-    {
-        _carPhysics.SetBrake(value.Get<float>());
-    }
+        public void OnBrake(InputValue value)
+        {
+            _carPhysics.SetBrake(value.Get<float>());
+        }
 
-    public void OnSteering(InputValue value)
-    {
-        _carPhysics.SetSteering(value.Get<float>());
+        public void OnSteering(InputValue value)
+        {
+            _carPhysics.SetSteering(value.Get<float>());
+        }
     }
 }

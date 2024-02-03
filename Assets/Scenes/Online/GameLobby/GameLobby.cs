@@ -1,0 +1,99 @@
+using System.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+
+namespace Scenes.Online.GameLobby
+{
+    public class GameLobby : MonoBehaviour
+    {
+        [SerializeField] private Transform listParent;
+        [SerializeField] private GameObject playerDetailsPrefab;
+        [SerializeField] private TMP_Text countdownText;
+        
+        private float heartbeatTimer = 0f;
+        private float countdownTimer = 0f;
+
+        private async void OnEnable()
+        {
+            await RefreshLobby();
+        }
+
+        private async void FixedUpdate()
+        {
+            await HandleHeartbeat();
+
+            var countdown = LobbyManager.Instance.GetCountdown();
+            if (countdown == string.Empty)
+            {
+                countdownText.text = string.Empty;
+            }
+            else
+            {
+                countdownText.text = $"Game starting in {countdown}...";
+            }
+        }
+
+        private async Task HandleHeartbeat()
+        {
+            heartbeatTimer += Time.fixedDeltaTime;
+            if (heartbeatTimer >= 1.1f)
+            {
+                heartbeatTimer = 0f;
+                await RefreshLobby();
+            }
+        }
+
+        public async Task RefreshLobby()
+        {
+            await LobbyManager.Instance.RefreshLobby();
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+            
+            var players = LobbyManager.Instance.GetPlayers();
+
+            if (listParent == null)
+            {
+                return;
+            }
+            
+            // update panels that already exist
+            foreach (Transform child in listParent)
+            {
+                var playerDetails = child.GetComponent<LobbyPlayerDetails>();
+                if (playerDetails != null)
+                {
+                    var player = players.Find(p => p.Id == playerDetails.name);
+                    if (player != null)
+                    {
+                        playerDetails.Set(player);
+                    }
+                }
+            }
+            
+            // create new panels for new players
+            foreach (var player in players)
+            {
+                if (listParent.Find(player.Id) == null)
+                {
+                    var playerDetails = Instantiate(playerDetailsPrefab, listParent).GetComponent<LobbyPlayerDetails>();
+                    playerDetails.Set(player);
+                }
+            }
+            
+            // remove panels for players that have left
+            foreach (Transform child in listParent)
+            {
+                var playerDetails = child.GetComponent<LobbyPlayerDetails>();
+                if (playerDetails != null)
+                {
+                    if (players.Find(p => p.Id == playerDetails.name) == null)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+            }
+        }
+    }
+}
