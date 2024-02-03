@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - CarParkSpace
+  - SpawnLocations
   layers:
   - Default
   - TransparentFX
