@@ -8,7 +8,7 @@ namespace _Game.Camera
         [SerializeField] private Transform camParent;
         private Transform _target;
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             if (_target == null)
             {
@@ -33,7 +33,7 @@ namespace _Game.Camera
                 // follow the target but keep upright
                 transform.position = _target.position;
                 var newRot = Quaternion.Euler(0, _target.eulerAngles.y, 0);
-                transform.rotation = newRot;
+                transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * 2.5f);
             }
         }
     }
