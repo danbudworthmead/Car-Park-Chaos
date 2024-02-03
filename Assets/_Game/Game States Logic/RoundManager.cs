@@ -126,6 +126,7 @@ namespace _Game.Game_States_Logic
                 var physics = client.GetComponent<CarPhysics>();
                 var spawnLocation = spawnLocations.GetChild(i);
                 physics.SetPositionClientRpc(spawnLocation.position);
+                physics.SetRotationClientRpc(spawnLocation.rotation);
             }
         }
 
