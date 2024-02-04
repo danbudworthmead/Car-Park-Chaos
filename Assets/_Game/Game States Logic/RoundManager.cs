@@ -132,6 +132,11 @@ namespace _Game.Game_States_Logic
             var numberOfSpacesToFree = NetworkManager.Singleton.ConnectedClients.Count - 1;
             numberOfSpacesToFree = Mathf.Clamp(numberOfSpacesToFree, 1, parkingSpaces.Count);
             parkingSpaces.Shuffle();
+            
+            Debug.Log($"Parking Spaces [{parkingSpaces.Count}]" +
+                      $"- Connected Clients [{NetworkManager.Singleton.ConnectedClients.Count}]" +
+                      $"- Freeing up [{numberOfSpacesToFree}] spaces " +
+                      $"- [{parkingSpaces.Count - numberOfSpacesToFree}] spaces left.");
                     
             for (var i = 0; i < numberOfSpacesToFree; i++)
             {
