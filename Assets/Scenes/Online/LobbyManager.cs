@@ -52,6 +52,7 @@ namespace Scenes.Online
             {
                 Debug.Log($"Signed in: {AuthenticationService.Instance.PlayerId}");
             };
+            AuthenticationService.Instance.SwitchProfile($"Clone_{_playerName}_Profile");
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
         

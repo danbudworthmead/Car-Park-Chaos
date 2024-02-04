@@ -6,10 +6,12 @@ namespace _Game.Car
     public class CarController : NetworkBehaviour
     {
         private CarPhysics _carPhysics;
+        private CarAudio _carAudio;
 
         private void Awake()
         {
             _carPhysics = GetComponent<CarPhysics>();
+            _carAudio = GetComponent<CarAudio>();
         }
 
         private void Start()
@@ -33,6 +35,11 @@ namespace _Game.Car
         public void OnSteering(InputValue value)
         {
             _carPhysics.SetSteering(value.Get<float>());
+        }
+
+        public void OnHorn(InputValue value)
+        {
+            _carAudio.HonkHornServerRpc();
         }
     }
 }
