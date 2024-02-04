@@ -113,7 +113,7 @@ namespace _Game.Game_States_Logic
                 var physics = client.GetComponent<CarPhysics>();
                 var playerState = client.GetComponent<PlayerState>();
                 var spawnLocation = spawnLocations.GetChild(i);
-                playerState.SetAliveClientRpc();
+                playerState.UnfreezeClientRpc();
                 physics.SetPositionClientRpc(spawnLocation.position);
                 physics.SetRotationClientRpc(spawnLocation.rotation);
             }
