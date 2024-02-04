@@ -17,6 +17,7 @@ namespace Scenes.Game
     public class ServerConnectionManager : MonoBehaviour
     {
         [SerializeField] private NetworkObject playerPrefab;
+        [SerializeField] private GameObject uiPrefab;
         
         private Dictionary<ulong, NetworkObject> _players = new();
         private bool _hasConnected = false;
@@ -85,6 +86,7 @@ namespace Scenes.Game
 
             if (NetworkManager.Singleton.LocalClientId == clientId)
             {
+                Instantiate(uiPrefab);
                 _hasConnected = true;
             }
         }
