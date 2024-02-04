@@ -4,10 +4,9 @@ using System.Linq;
 using _Game.Car;
 using _Game.Car_Park;
 using _Game.Car.Player_Cars;
+using Scenes.Online;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace _Game.Game_States_Logic
 {
@@ -24,15 +23,15 @@ namespace _Game.Game_States_Logic
         public RoundStates RoundState { get; private set; } = RoundStates.Initializing;
         public float timer;
         private readonly List<CarParkSpace> _parkingSpaces = new();
-        private readonly NetworkVariable<Dictionary<ulong, bool>> _playersReady = new(new Dictionary<ulong, bool>());
+        private readonly Dictionary<ulong, bool> _playersReady = new();
 
         private void Awake()
         {
             if (NetworkManager.Singleton.IsHost)
             {
-                foreach (var client in NetworkManager.Singleton.ConnectedClients)
+                foreach (var clientId in NetworkManager.Singleton.ConnectedClients.Keys)
                 {
-                    _playersReady.Value.Add(client.Key, false);
+                    _playersReady.Add(clientId, false);
                 }
             }
         }
@@ -126,7 +125,7 @@ namespace _Game.Game_States_Logic
 
         private bool AllPlayersReady()
         {
-            return _playersReady.Value.All(p => p.Value == true);
+            return _playersReady.All(p => p.Value == true);
         }
 
         private void SetupPlayers()
@@ -179,7 +178,7 @@ namespace _Game.Game_States_Logic
         [ServerRpc]
         public void SetPlayerReadyServerRpc(ulong clientId)
         {
-            _playersReady.Value[clientId] = true;
+            _playersReady[clientId] = true;
         }
     }
 }

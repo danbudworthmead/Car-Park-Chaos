@@ -54,7 +54,7 @@ namespace _Game.Game_States_Logic
                             return;
                         }
 
-                        // check all players have cars
+                        // check all players have players states
                         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
                         {
                             if (client.PlayerObject == null)
@@ -78,7 +78,7 @@ namespace _Game.Game_States_Logic
                         }
                         else
                         {
-                            if (PlayersHaveLoaded())
+                            if (AtLeastOnePlayerAlive())
                             {
                                 CurrentRound = InitRound();
                             } 
@@ -102,9 +102,9 @@ namespace _Game.Game_States_Logic
 
         }
 
-        private bool PlayersHaveLoaded()
+        private bool AtLeastOnePlayerAlive()
         {
-            var playersHaveLoaded = false;
+            var onePlayerAlive = false;
             
             var players = NetworkManager.Singleton.ConnectedClients.Values
                 .Select(c => c.PlayerObject.GetComponent<PlayerState>());
@@ -112,10 +112,10 @@ namespace _Game.Game_States_Logic
 
             if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
             {
-                playersHaveLoaded = true;
+                onePlayerAlive = true;
             }
             
-            return playersHaveLoaded;
+            return onePlayerAlive;
         }
 
         private RoundManager InitRound()
