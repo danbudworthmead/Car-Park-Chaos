@@ -5,6 +5,7 @@ using _Game.Car;
 using _Game.Car_Park;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,14 +20,26 @@ namespace _Game.Game_States_Logic
             Playing,
             GameOver,
         }
-        
-        public RoundStates RoundState { get; private set; }
+
+        public RoundStates RoundState { get; private set; } = RoundStates.Initializing;
         public float timer;
-        private List<CarParkSpace> _parkingSpaces = new();
+        private readonly List<CarParkSpace> _parkingSpaces = new();
+        private readonly NetworkVariable<Dictionary<ulong, bool>> _playersReady = new(new Dictionary<ulong, bool>());
+
+        private void Awake()
+        {
+            if (NetworkManager.Singleton.IsHost)
+            {
+                foreach (var client in NetworkManager.Singleton.ConnectedClients)
+                {
+                    _playersReady.Value.Add(client.Key, false);
+                }
+            }
+        }
 
         private void Start()
         {
-            RoundState = RoundStates.Initializing;
+            SetPlayerReadyServerRpc(NetworkManager.Singleton.LocalClientId);
         }
 
         private void FixedUpdate()
@@ -60,7 +73,7 @@ namespace _Game.Game_States_Logic
             switch (RoundState)
             {
                 case RoundStates.Initializing:
-                    // check all players have a car
+                    // wait for all clients to send ready signal
                     if (!AllPlayersReady())
                     {
                         return;
@@ -113,13 +126,7 @@ namespace _Game.Game_States_Logic
 
         private bool AllPlayersReady()
         {
-            foreach (var client in NetworkManager.Singleton.ConnectedClients)
-            {
-                if (client.Value.PlayerObject == null) 
-                    return false;
-            }
-
-            return true;
+            return _playersReady.Value.All(p => p.Value == true);
         }
 
         private void SetupPlayers()
@@ -167,6 +174,12 @@ namespace _Game.Game_States_Logic
         {
             RoundState = states;
             Debug.Log($"Round state is now {RoundState}");
+        }
+        
+        [ServerRpc]
+        public void SetPlayerReadyServerRpc(ulong clientId)
+        {
+            _playersReady.Value[clientId] = true;
         }
     }
 }
