@@ -8,9 +8,17 @@ using UnityEngine;
 public class Nametag : MonoBehaviour
 {
     [SerializeField] private TextMeshPro textObject;
-    [SerializeField] private PlayerData data;
-    public void Setup()
+    private PlayerData data;
+    private void Update()
     {
+        if (!data)
+        {
+            data = transform.parent.GetComponent<PlayerData>();
+            return;
+        }
+
         textObject.text = data.Player;
+        transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.forward,
+        Camera.main.transform.rotation * Vector3.up);
     }
 }

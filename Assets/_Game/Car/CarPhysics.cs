@@ -26,9 +26,11 @@ namespace _Game.Car
         private float _currentAcceleration = 0f;
         private float _currentBrakeForce = 0f;
         private float _currentTurnAngle = 0f;
-
+        
         public float Speed { get; private set; }
 
+        public NetworkVariable<float> EngineRPM = new (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        
         public void SetAcceleration(float accelerator)
         {
             _currentAcceleration = accelerator * acceleration;
@@ -66,6 +68,9 @@ namespace _Game.Car
             frontRight.steerAngle = _currentTurnAngle;
         
             Speed = rigidbody.velocity.magnitude;
+            
+            if (IsOwner) EngineRPM.Value = Speed;
+            
         }
 
         private void Update()
