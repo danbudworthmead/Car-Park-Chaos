@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -776750069830853927, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
+  - {fileID: 4079362192135711221, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -252,6 +252,12 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 3247555673689716653, guid: 4c31e37a07867924a9d40bc3818612d5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 4079362192135711221, guid: 370d5126d45de4e4f884ea33816856ea,
+        type: 3}
     - target: {fileID: 3967040318812287285, guid: 4c31e37a07867924a9d40bc3818612d5,
         type: 3}
       propertyPath: m_StaticEditorFlags
