@@ -9,19 +9,35 @@ namespace _Game.Car
         private CarPhysics carPhysics;
     
         [SerializeField]
-        private AudioSource carAudio;
+        private AudioSource engineAudio;
+        
+        [SerializeField]
+        private AudioSource hornAudio;
     
         // Start is called before the first frame update
         private void Start()
         {
-            Debug.Assert(carAudio);
             Debug.Assert(carPhysics);
+            Debug.Assert(engineAudio);
+            Debug.Assert(hornAudio);
         }
 
         // Update is called once per frame
         private void Update()
         {
-            carAudio.pitch = 1+carPhysics.EngineRPM.Value/12f;
+            engineAudio.pitch = 1+carPhysics.EngineRPM.Value/12f;
+        }
+
+        [ServerRpc]
+        public void HonkHornServerRpc()
+        {
+            HonkHornClientRpc();
+        }
+
+        [ClientRpc]
+        public void HonkHornClientRpc()
+        {
+            hornAudio.Play();
         }
     }
 }
