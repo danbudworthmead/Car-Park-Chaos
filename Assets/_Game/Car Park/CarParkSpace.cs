@@ -63,10 +63,9 @@ namespace _Game.Car_Park
             }
             else
             {
-                NetworkManager.Singleton.ConnectedClients[carOwnerId]
-                    .PlayerObject.GetComponent<PlayerState>().SetParked();
                 CarInSpace = FindObjectsOfType<CarPhysics>()
                     .First(car => car.OwnerClientId == carOwnerId);
+                CarInSpace.GetComponent<PlayerState>().SetParked();
             }
         }
 
