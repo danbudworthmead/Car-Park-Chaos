@@ -26,6 +26,7 @@ namespace _Game.Car.Player_Cars
             _state = PlayerStates.Alive;
             carRigidbody.constraints = RigidbodyConstraints.None;
         }
+        
         public void SetParked()
         {
             _isParked = true;

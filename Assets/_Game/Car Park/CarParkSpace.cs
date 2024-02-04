@@ -37,7 +37,7 @@ namespace _Game.Car_Park
 
         private void OnTriggerStay(Collider other)
         {
-            if (NetworkManager.Singleton.IsHost)
+            if (IsFree && NetworkManager.Singleton.IsHost)
             {
                 var player = other.GetComponent<PlayerState>();
                 if (player && player.IsAlive)
