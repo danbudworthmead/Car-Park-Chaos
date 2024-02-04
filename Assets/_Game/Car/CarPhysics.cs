@@ -85,7 +85,7 @@ namespace _Game.Car
         {
             col.GetWorldPose(out var pos, out var rot);
             t.position = pos;
-            t.rotation = rot;
+            t.rotation = Quaternion.Lerp(t.rotation, rot, Time.deltaTime * 11f);
         }
         
         [ClientRpc]

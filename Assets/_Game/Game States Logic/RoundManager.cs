@@ -61,7 +61,7 @@ namespace _Game.Game_States_Logic
                         return;
                     }
 
-                    TeleportPlayers();
+                    SetupPlayers();
                     FreeSpaces();
                     SetStateClientRpc(RoundStates.Countdown);
                     break;
@@ -114,7 +114,7 @@ namespace _Game.Game_States_Logic
             return true;
         }
 
-        private void TeleportPlayers()
+        private void SetupPlayers()
         {
             Transform spawnLocations = GameObject.FindWithTag("SpawnLocations").transform;
             var clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToList();
@@ -124,7 +124,9 @@ namespace _Game.Game_States_Logic
             {
                 var client = NetworkManager.Singleton.ConnectedClients[(ulong)i].PlayerObject;
                 var physics = client.GetComponent<CarPhysics>();
+                var playerState = client.GetComponent<PlayerState>();
                 var spawnLocation = spawnLocations.GetChild(i);
+                playerState.SetAliveClientRpc();
                 physics.SetPositionClientRpc(spawnLocation.position);
                 physics.SetRotationClientRpc(spawnLocation.rotation);
             }
