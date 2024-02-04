@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2981849772
+  GlobalObjectIdHash: 2689663675
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -67,3 +67,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roundLogicPrefab: {fileID: -9117375190318734683, guid: 4eeac9fdd5dca40418394d37443a9584,
     type: 3}
+  RoundDuration: 180

@@ -72,6 +72,8 @@ namespace _Game.Car_Park
         [ClientRpc]
         public void SetFreeClientRpc()
         {
+            // log
+            Debug.Log($"Car Park Space [{NetworkObjectId}] is now free");
             CarInSpace = null;
             collider.isTrigger = true;
             Destroy(npcCar);
