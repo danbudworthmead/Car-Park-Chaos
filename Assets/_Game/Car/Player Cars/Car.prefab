@@ -469,6 +469,8 @@ MonoBehaviour:
   breakingForce: 500
   maxTurnAngle: 25
   rigidbody: {fileID: 5055295808956164038}
+  EngineRPM:
+    m_InternalValue: 0
 --- !u!82 &2179910805473557653
 AudioSource:
   m_ObjectHideFlags: 0
@@ -578,8 +580,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c36d6977b75dfc43871ed157e48dcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPhysics: {fileID: 0}
-  carAudio: {fileID: 0}
+  carPhysics: {fileID: 8306680239813908818}
+  carAudio: {fileID: 2179910805473557653}
 --- !u!114 &9182341263867756690
 MonoBehaviour:
   m_ObjectHideFlags: 0
