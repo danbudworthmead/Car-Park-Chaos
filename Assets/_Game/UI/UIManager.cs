@@ -8,7 +8,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
-    private RoundManager roundManager;
+    private RoundManager _roundManager;
 
     private void Update()
     {
