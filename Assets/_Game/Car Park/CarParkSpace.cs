@@ -37,7 +37,7 @@ namespace _Game.Car_Park
 
         private void OnTriggerStay(Collider other)
         {
-            if (NetworkManager.Singleton.IsHost)
+            if (IsFree && NetworkManager.Singleton.IsHost)
             {
                 var player = other.GetComponent<PlayerState>();
                 if (player && player.IsAlive)
@@ -63,16 +63,17 @@ namespace _Game.Car_Park
             }
             else
             {
-                NetworkManager.Singleton.ConnectedClients[carOwnerId]
-                    .PlayerObject.GetComponent<PlayerState>().SetParked();
                 CarInSpace = FindObjectsOfType<CarPhysics>()
                     .First(car => car.OwnerClientId == carOwnerId);
+                CarInSpace.GetComponent<PlayerState>().SetParked();
             }
         }
 
         [ClientRpc]
         public void SetFreeClientRpc()
         {
+            // log
+            Debug.Log($"Car Park Space [{NetworkObjectId}] is now free");
             CarInSpace = null;
             collider.isTrigger = true;
             Destroy(npcCar);

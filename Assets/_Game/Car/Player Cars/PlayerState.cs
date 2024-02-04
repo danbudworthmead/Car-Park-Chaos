@@ -21,13 +21,18 @@ namespace _Game.Car.Player_Cars
         public bool IsDead => _state == PlayerStates.Dead;
 
         [ClientRpc]
-        public void SetAliveClientRpc()
+        public void UnfreezeClientRpc()
         {
-            _state = PlayerStates.Alive;
             carRigidbody.constraints = RigidbodyConstraints.None;
         }
+
         public void SetParked()
         {
+            if (_isParked)
+            {
+                return;
+            }
+            
             _isParked = true;
             // Freeze car? (probably not the best method but)
             carRigidbody.constraints = RigidbodyConstraints.FreezeAll;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using _Game.Car.Player_Cars;
 using Scenes.Online;
@@ -55,7 +54,7 @@ namespace _Game.Game_States_Logic
                             return;
                         }
 
-                        // check all players have cars
+                        // check all players have players states
                         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
                         {
                             if (client.PlayerObject == null)
@@ -79,10 +78,7 @@ namespace _Game.Game_States_Logic
                         }
                         else
                         {
-                            var players = NetworkManager.Singleton.ConnectedClients.Values
-                                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
-                            var playerStates = players as PlayerState[] ?? players.ToArray();
-                            if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
+                            if (AtLeastOnePlayerAlive())
                             {
                                 CurrentRound = InitRound();
                             } 
@@ -104,6 +100,22 @@ namespace _Game.Game_States_Logic
             if (CurrentRound == null)
                 CurrentRound = GetComponentInChildren<RoundManager>();
 
+        }
+
+        private bool AtLeastOnePlayerAlive()
+        {
+            var onePlayerAlive = false;
+            
+            var players = NetworkManager.Singleton.ConnectedClients.Values
+                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
+            var playerStates = players as PlayerState[] ?? players.ToArray();
+
+            if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
+            {
+                onePlayerAlive = true;
+            }
+            
+            return onePlayerAlive;
         }
 
         private RoundManager InitRound()

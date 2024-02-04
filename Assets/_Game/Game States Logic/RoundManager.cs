@@ -6,7 +6,6 @@ using _Game.Car_Park;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace _Game.Game_States_Logic
 {
@@ -19,15 +18,10 @@ namespace _Game.Game_States_Logic
             Playing,
             GameOver,
         }
-        
-        public RoundStates RoundState { get; private set; }
-        public float timer;
-        private List<CarParkSpace> _parkingSpaces = new();
 
-        private void Start()
-        {
-            RoundState = RoundStates.Initializing;
-        }
+        public RoundStates RoundState { get; private set; } = RoundStates.Initializing;
+        public float timer;
+        private readonly List<CarParkSpace> _parkingSpaces = new();
 
         private void FixedUpdate()
         {
@@ -37,8 +31,10 @@ namespace _Game.Game_States_Logic
             }
 
             ClientLogic();
-            if (NetworkManager.Singleton.IsHost) 
+            if (NetworkManager.Singleton.IsHost)
+            {
                 HostLogic();
+            }
         }   
 
         private void ClientLogic()
@@ -60,12 +56,6 @@ namespace _Game.Game_States_Logic
             switch (RoundState)
             {
                 case RoundStates.Initializing:
-                    // check all players have a car
-                    if (!AllPlayersReady())
-                    {
-                        return;
-                    }
-
                     SetupPlayers();
                     FreeSpaces();
                     SetStateClientRpc(RoundStates.Countdown);
@@ -111,17 +101,6 @@ namespace _Game.Game_States_Logic
             return _parkingSpaces.Any(space => space.IsFree);
         }
 
-        private bool AllPlayersReady()
-        {
-            foreach (var client in NetworkManager.Singleton.ConnectedClients)
-            {
-                if (client.Value.PlayerObject == null) 
-                    return false;
-            }
-
-            return true;
-        }
-
         private void SetupPlayers()
         {
             Transform spawnLocations = GameObject.FindWithTag("SpawnLocations").transform;
@@ -134,7 +113,7 @@ namespace _Game.Game_States_Logic
                 var physics = client.GetComponent<CarPhysics>();
                 var playerState = client.GetComponent<PlayerState>();
                 var spawnLocation = spawnLocations.GetChild(i);
-                playerState.SetAliveClientRpc();
+                playerState.UnfreezeClientRpc();
                 physics.SetPositionClientRpc(spawnLocation.position);
                 physics.SetRotationClientRpc(spawnLocation.rotation);
             }
@@ -153,6 +132,11 @@ namespace _Game.Game_States_Logic
             var numberOfSpacesToFree = NetworkManager.Singleton.ConnectedClients.Count - 1;
             numberOfSpacesToFree = Mathf.Clamp(numberOfSpacesToFree, 1, parkingSpaces.Count);
             parkingSpaces.Shuffle();
+            
+            Debug.Log($"Parking Spaces [{parkingSpaces.Count}]" +
+                      $"- Connected Clients [{NetworkManager.Singleton.ConnectedClients.Count}]" +
+                      $"- Freeing up [{numberOfSpacesToFree}] spaces " +
+                      $"- [{parkingSpaces.Count - numberOfSpacesToFree}] spaces left.");
                     
             for (var i = 0; i < numberOfSpacesToFree; i++)
             {

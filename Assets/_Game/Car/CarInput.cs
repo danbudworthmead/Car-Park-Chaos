@@ -53,6 +53,15 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Horn"",
+                    ""type"": ""Button"",
+                    ""id"": ""049f4927-584f-4469-9e3f-6c453e53cf3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -242,6 +251,28 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
                     ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""06d52413-4691-491d-936e-480c82179903"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""138e6fe6-96a9-40f3-adc8-edbadf671d44"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Horn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -253,6 +284,7 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
         m_Drive_Accelerate = m_Drive.FindAction("Accelerate", throwIfNotFound: true);
         m_Drive_Brake = m_Drive.FindAction("Brake", throwIfNotFound: true);
         m_Drive_Steering = m_Drive.FindAction("Steering", throwIfNotFound: true);
+        m_Drive_Horn = m_Drive.FindAction("Horn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +349,7 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Drive_Accelerate;
     private readonly InputAction m_Drive_Brake;
     private readonly InputAction m_Drive_Steering;
+    private readonly InputAction m_Drive_Horn;
     public struct DriveActions
     {
         private @CarInput m_Wrapper;
@@ -324,6 +357,7 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
         public InputAction @Accelerate => m_Wrapper.m_Drive_Accelerate;
         public InputAction @Brake => m_Wrapper.m_Drive_Brake;
         public InputAction @Steering => m_Wrapper.m_Drive_Steering;
+        public InputAction @Horn => m_Wrapper.m_Drive_Horn;
         public InputActionMap Get() { return m_Wrapper.m_Drive; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -342,6 +376,9 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
             @Steering.started += instance.OnSteering;
             @Steering.performed += instance.OnSteering;
             @Steering.canceled += instance.OnSteering;
+            @Horn.started += instance.OnHorn;
+            @Horn.performed += instance.OnHorn;
+            @Horn.canceled += instance.OnHorn;
         }
 
         private void UnregisterCallbacks(IDriveActions instance)
@@ -355,6 +392,9 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
             @Steering.started -= instance.OnSteering;
             @Steering.performed -= instance.OnSteering;
             @Steering.canceled -= instance.OnSteering;
+            @Horn.started -= instance.OnHorn;
+            @Horn.performed -= instance.OnHorn;
+            @Horn.canceled -= instance.OnHorn;
         }
 
         public void RemoveCallbacks(IDriveActions instance)
@@ -377,5 +417,6 @@ public partial class @CarInput: IInputActionCollection2, IDisposable
         void OnAccelerate(InputAction.CallbackContext context);
         void OnBrake(InputAction.CallbackContext context);
         void OnSteering(InputAction.CallbackContext context);
+        void OnHorn(InputAction.CallbackContext context);
     }
 }
