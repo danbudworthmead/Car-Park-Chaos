@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 6156524125170456723}
   - component: {fileID: 3695707922280290407}
   - component: {fileID: 1930459950776037394}
+  - component: {fileID: -2199237645074184399}
   m_Layer: 0
   m_Name: Car1_Purple
   m_TagString: Untagged
@@ -590,6 +591,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-2199237645074184399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7227587478320533046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e601ea5b70b8d46418503e3655c9d137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontLeftWheel: {fileID: 5898375361080058541}
+  frontRightWheel: {fileID: 1376816371518734628}
+  rearLeftWheel: {fileID: 6802022188333764554}
+  rearRightWheel: {fileID: 4061660677601385268}
+  rearHeadlights: {fileID: 2474634964202877906}
 --- !u!1 &7390276480108425009
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,6 +785,7 @@ GameObject:
   - component: {fileID: 3255865756346834880}
   - component: {fileID: 2508585320360214569}
   - component: {fileID: 1759468214536120470}
+  - component: {fileID: 2474634964202877906}
   m_Layer: 0
   m_Name: rear lights
   m_TagString: Untagged
@@ -839,3 +858,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2474634964202877906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8263103160387696474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ce63f03071f2fd478fbbdf9e7165806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  off: {fileID: 4079362192135711221, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
+  on: {fileID: -3724625188528242052, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}

@@ -45,13 +45,5 @@ namespace _Game.Car.Player_Cars
             _state = PlayerStates.Dead;
             Debug.Log($"{OwnerClientId} has been knocked out!");
         }
-
-        private void Update()
-        {
-            foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>())
-            {
-                meshRenderer.material.color = IsAlive ? Color.green : Color.red;
-            }
-        }
     }
 }

@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 891901518013839697}
   - component: {fileID: 8787655966080458660}
   - component: {fileID: 4838396833605704525}
+  - component: {fileID: 4530862163778983988}
   m_Layer: 0
   m_Name: rear lights.003
   m_TagString: Untagged
@@ -332,6 +333,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4530862163778983988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007533794434093056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ce63f03071f2fd478fbbdf9e7165806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  off: {fileID: 4079362192135711221, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
+  on: {fileID: -3724625188528242052, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
 --- !u!1 &3068576531906143619
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +524,7 @@ GameObject:
   - component: {fileID: 4254810877479112596}
   - component: {fileID: 8362609233669422860}
   - component: {fileID: 6623699319869673334}
+  - component: {fileID: 3969886413618596661}
   m_Layer: 0
   m_Name: Car1_Yellow
   m_TagString: Untagged
@@ -590,6 +606,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3969886413618596661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5386467807476764911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e601ea5b70b8d46418503e3655c9d137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontLeftWheel: {fileID: 5954196129007347828}
+  frontRightWheel: {fileID: 4710544875616958215}
+  rearLeftWheel: {fileID: 5777532857465158172}
+  rearRightWheel: {fileID: 1235959384746901564}
+  rearHeadlights: {fileID: 4530862163778983988}
 --- !u!1 &6440701746530508777
 GameObject:
   m_ObjectHideFlags: 0

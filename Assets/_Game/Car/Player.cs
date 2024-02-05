@@ -8,12 +8,14 @@ namespace _Game.Car
         [SerializeField] private Cars.Cars carDatabase;
         [SerializeField] private Transform carPivot;
         
+        public Cars.Car Car { get; private set; }
+        
         [ClientRpc]
         public void InstantiateCarClientRpc(int carIdx)
         {
             // log this with owner id
             Debug.Log($"Player {OwnerClientId} is spawning car {carIdx}");
-            Instantiate(carDatabase.GetCar(carIdx), carPivot.position, carPivot.rotation, carPivot);
+            Car = Instantiate(carDatabase.GetCar(carIdx), carPivot.position, carPivot.rotation, carPivot);
         }
     }
 }

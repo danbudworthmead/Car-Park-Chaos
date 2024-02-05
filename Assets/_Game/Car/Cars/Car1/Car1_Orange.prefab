@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 7580435135333348207}
   - component: {fileID: 6187277733953161542}
   - component: {fileID: 3699772149593637477}
+  - component: {fileID: -1013202287912659035}
   m_Layer: 0
   m_Name: Car1_Orange
   m_TagString: Untagged
@@ -341,6 +342,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-1013202287912659035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5198350155103033315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e601ea5b70b8d46418503e3655c9d137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontLeftWheel: {fileID: 3408428096250535339}
+  frontRightWheel: {fileID: 9122363600120209293}
+  rearLeftWheel: {fileID: 5334782093597991206}
+  rearRightWheel: {fileID: 250712625843100612}
+  rearHeadlights: {fileID: 8121051491273848601}
 --- !u!1 &5649781127727532394
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,6 +370,7 @@ GameObject:
   - component: {fileID: 5118378714044574136}
   - component: {fileID: 8798398868765023127}
   - component: {fileID: 4245949872277593061}
+  - component: {fileID: 8121051491273848601}
   m_Layer: 0
   m_Name: rear lights.004
   m_TagString: Untagged
@@ -424,6 +443,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8121051491273848601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649781127727532394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ce63f03071f2fd478fbbdf9e7165806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  off: {fileID: 4079362192135711221, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
+  on: {fileID: -3724625188528242052, guid: 370d5126d45de4e4f884ea33816856ea, type: 3}
 --- !u!1 &5660580328096577343
 GameObject:
   m_ObjectHideFlags: 0

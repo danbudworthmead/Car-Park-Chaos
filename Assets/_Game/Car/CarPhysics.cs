@@ -5,23 +5,18 @@ namespace _Game.Car
 {
     public class CarPhysics : NetworkBehaviour
     {
-        [SerializeField] private Headlights rearHeadlights;
-    
         [SerializeField] private WheelCollider frontLeft;
         [SerializeField] private WheelCollider frontRight;
         [SerializeField] private WheelCollider rearLeft;
         [SerializeField] private WheelCollider rearRight;
-
-        [SerializeField] private Transform frontLeftWheel;
-        [SerializeField] private Transform frontRightWheel;
-        [SerializeField] private Transform rearLeftWheel;
-        [SerializeField] private Transform rearRightWheel;
 
         [SerializeField] private float acceleration = 500f;
         [SerializeField] private float breakingForce = 300f;
         [SerializeField] private float maxTurnAngle = 15f;
 
         [SerializeField] private new Rigidbody rigidbody;
+        
+        private Cars.Car _car;
 
         private float _currentAcceleration = 0f;
         private float _currentBrakeForce = 0f;
@@ -39,7 +34,11 @@ namespace _Game.Car
         public void SetBrake(float brake)
         {
             _currentBrakeForce = brake * breakingForce;
-            // rearHeadlights.SetOn(brake > 0);
+
+            if (_car && _car.rearHeadlights)
+            {
+                _car.rearHeadlights.SetOn(brake > 0);   
+            }
         }
 
         public void SetSteering(float steering)
@@ -48,7 +47,13 @@ namespace _Game.Car
         }
 
         private void FixedUpdate()
-        {
+        { 
+            if (!_car)
+            {
+                _car = GetComponentInChildren<Cars.Car>();
+                return;
+            }
+            
             var accel = _currentAcceleration - _currentBrakeForce;
         
             // apply acceleration to the front wheels
@@ -75,11 +80,12 @@ namespace _Game.Car
 
         private void Update()
         {
-            return;
-            UpdateWheel(frontLeft, frontLeftWheel);
-            UpdateWheel(frontRight, frontRightWheel);
-            UpdateWheel(rearLeft, rearLeftWheel);
-            UpdateWheel(rearRight, rearRightWheel);
+            if (_car == null) return;
+            
+            UpdateWheel(frontLeft, _car.frontLeftWheel);
+            UpdateWheel(frontRight, _car.frontRightWheel);
+            UpdateWheel(rearLeft, _car.rearLeftWheel);
+            UpdateWheel(rearRight, _car.rearRightWheel);
         }
 
         private static void UpdateWheel(WheelCollider col, Transform t)
