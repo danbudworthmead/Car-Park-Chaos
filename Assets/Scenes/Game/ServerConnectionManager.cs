@@ -9,7 +9,6 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Relay;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 namespace Scenes.Game

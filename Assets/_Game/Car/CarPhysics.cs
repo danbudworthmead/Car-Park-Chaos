@@ -39,7 +39,7 @@ namespace _Game.Car
         public void SetBrake(float brake)
         {
             _currentBrakeForce = brake * breakingForce;
-            rearHeadlights.SetOn(brake > 0);
+            // rearHeadlights.SetOn(brake > 0);
         }
 
         public void SetSteering(float steering)
@@ -75,6 +75,7 @@ namespace _Game.Car
 
         private void Update()
         {
+            return;
             UpdateWheel(frontLeft, frontLeftWheel);
             UpdateWheel(frontRight, frontRightWheel);
             UpdateWheel(rearLeft, rearLeftWheel);

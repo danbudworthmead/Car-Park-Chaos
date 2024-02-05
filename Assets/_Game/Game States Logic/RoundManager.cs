@@ -113,15 +113,18 @@ namespace _Game.Game_States_Logic
                                 playerIds.Remove(space.CarInSpace.OwnerClientId);
                             }
                         }
-                    
-                        // kill all remaining players
-                        foreach (var player in playerIds)
+
+                        if (playerIds.Count > 1)
                         {
-                            NetworkManager.Singleton.ConnectedClients[player]
-                                .PlayerObject.GetComponent<PlayerState>().SetDeadClientRpc();
+                            // kill all remaining players
+                            foreach (var player in playerIds)
+                            {
+                                NetworkManager.Singleton.ConnectedClients[player]
+                                    .PlayerObject.GetComponent<PlayerState>().SetDeadClientRpc();
+                            }
+
+                            SetStateClientRpc(RoundStates.GameOver);
                         }
-                        
-                        SetStateClientRpc(RoundStates.GameOver);
                     }
                     break;
                 case RoundStates.GameOver:

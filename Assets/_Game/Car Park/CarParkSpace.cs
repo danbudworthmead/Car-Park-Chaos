@@ -79,7 +79,7 @@ namespace _Game.Car_Park
                 Destroy(NpcCar);
             }
             
-            NpcCar = Instantiate(cars.GetCar(carIdx), transform);
+            NpcCar = Instantiate(cars.GetCar(carIdx), transform).gameObject;
             NpcCar.transform.position = transform.position;
             
             CarInSpace = null;

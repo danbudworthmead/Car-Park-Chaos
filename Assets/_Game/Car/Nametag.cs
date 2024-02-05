@@ -20,5 +20,7 @@ public class Nametag : MonoBehaviour
         textObject.text = data.Player;
         transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.forward,
         Camera.main.transform.rotation * Vector3.up);
+
+        textObject.text = data.carChoice.Value.ToString();
     }
 }
