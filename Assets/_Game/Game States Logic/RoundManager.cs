@@ -23,6 +23,35 @@ namespace _Game.Game_States_Logic
         public float timer;
         private readonly List<CarParkSpace> _parkingSpaces = new();
 
+        private NetworkVariable<int> _roundSeed = new();
+
+        private void Start()
+        {
+            if (NetworkManager.Singleton.IsHost)
+            {
+                _roundSeed.Value = UnityEngine.Random.Range(0, int.MaxValue);
+                OnRoundSeedSet(0, _roundSeed.Value);
+            }
+            else
+            {
+                _roundSeed.OnValueChanged += OnRoundSeedSet;   
+            }
+        }
+
+        private void OnRoundSeedSet(int previousvalue, int newvalue)
+        {
+            Debug.Log($"Round seed has been set to {newvalue}");
+            
+            UnityEngine.Random.InitState(newvalue);
+            
+            // go through all the spaces and set random cars
+            var carParkSpaces = FindObjectsOfType<CarParkSpace>();
+            foreach (var space in carParkSpaces)
+            {
+                space.SetCar(UnityEngine.Random.Range(0, int.MaxValue));
+            }
+        }
+
         private void FixedUpdate()
         {
             if (IsSpawned == false)

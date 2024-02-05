@@ -1,5 +1,6 @@
 using System.Linq;
 using _Game.Car;
+using _Game.Car.Cars;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace _Game.Car_Park
     {
         [SerializeField] private BoxCollider collider;
         [SerializeField] private GameObject npcCar;
+        [SerializeField] private Cars cars;
         
         public CarPhysics CarInSpace { get; private set; }
         public bool IsFree => CarInSpace == null;
@@ -57,6 +59,7 @@ namespace _Game.Car_Park
         [ClientRpc]
         public void SetCarInSpaceClientRpc(ulong carOwnerId)
         {
+            Debug.Log($"Car Park Space [{NetworkObjectId}] is now occupied by {carOwnerId}");
             if (carOwnerId == ulong.MaxValue)
             {
                 CarInSpace = null;
@@ -77,6 +80,12 @@ namespace _Game.Car_Park
             CarInSpace = null;
             collider.isTrigger = true;
             Destroy(npcCar);
+        }
+
+        public void SetCar(int carIdx)
+        {
+            var car = Instantiate(cars.GetCar(carIdx), transform);
+            car.transform.position = transform.position;
         }
     }
 }
