@@ -39,19 +39,20 @@ namespace _Game.Game_States_Logic
         {
             Debug.Log($"Round seed has been set to {seed}");
             
-            UnityEngine.Random.InitState(seed);
+            var rng = new Random(seed);
             
             // go through all the spaces and set random cars
-            var carParkSpaces = FindObjectsOfType<CarParkSpace>();
+            var carParkSpaces = FindObjectOfType<CarParkSpaces>().spaces;
             foreach (var space in carParkSpaces)
             {
-                space.SetCar(UnityEngine.Random.Range(0, int.MaxValue));
+                space.SetCar(rng.Next(int.MaxValue));
             }
 
             // free up random spaces
-            carParkSpaces.Shuffle();
+            carParkSpaces.Shuffle(rng);
+            
             for (var i = 0; i < freeSpaces; ++i)
-            {                
+            {
                 carParkSpaces[i].Free();
                 _parkingSpaces.Add(carParkSpaces[i]);
                 Debug.Log($"Space {carParkSpaces[i].NetworkObjectId} is now free");
