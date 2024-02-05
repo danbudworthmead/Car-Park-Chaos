@@ -115,7 +115,7 @@ namespace _Game.Game_States_Logic
                             }
                         }
 
-                        if (playerIds.Count > 1)
+                        if (NetworkManager.Singleton.ConnectedClients.Keys.Count() > 1)
                         {
                             // kill all remaining players
                             foreach (var player in playerIds)
