@@ -26,6 +26,7 @@ namespace _Game.Game_States_Logic
 
         private void Start()
         {
+            timer = MatchManager.Singleton.RoundDuration;
             if (NetworkManager.Singleton.IsHost)
             {
                 var alivePlayers = NetworkManager.Singleton.ConnectedClients.Values
