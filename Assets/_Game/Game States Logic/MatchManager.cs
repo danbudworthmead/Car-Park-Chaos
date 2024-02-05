@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using _Game.Car;
+using _Game.Car.Cars;
 using _Game.Car.Player_Cars;
 using Scenes.Online;
 using Unity.Netcode;
@@ -10,6 +12,7 @@ namespace _Game.Game_States_Logic
     public class MatchManager : NetworkBehaviour
     {
         [SerializeField] private NetworkObject roundLogicPrefab;
+        
         public float RoundDuration = 60;
 
         public RoundManager CurrentRound { get; private set; }
@@ -62,6 +65,19 @@ namespace _Game.Game_States_Logic
 
                             if (client.PlayerObject.GetComponent<PlayerState>() == null)
                                 return;
+                            
+                            if (client.PlayerObject.GetComponent<PlayerData>() == null)
+                                return;
+                            
+                            if (client.PlayerObject.GetComponent<PlayerData>().carChoice.Value == -1)
+                                return;
+                        }
+                        
+                        // spawn the players cars
+                        foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
+                        {
+                            var chosenCarIdx = client.PlayerObject.GetComponent<PlayerData>().carChoice.Value;
+                            client.PlayerObject.GetComponent<Player>().InstantiateCarClientRpc(chosenCarIdx);
                         }
 
                         SetMatchStateClientRpc(MatchState.Playing);

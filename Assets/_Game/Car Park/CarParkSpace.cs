@@ -1,5 +1,6 @@
 using System.Linq;
 using _Game.Car;
+using _Game.Car.Cars;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,10 +11,11 @@ namespace _Game.Car_Park
     public class CarParkSpace : NetworkBehaviour
     {
         [SerializeField] private BoxCollider collider;
-        [SerializeField] private GameObject npcCar;
+        [SerializeField] private Cars cars;
         
         public CarPhysics CarInSpace { get; private set; }
         public bool IsFree => CarInSpace == null;
+        public GameObject NpcCar { get; private set; }
 
         private void Update()
         {
@@ -57,6 +59,7 @@ namespace _Game.Car_Park
         [ClientRpc]
         public void SetCarInSpaceClientRpc(ulong carOwnerId)
         {
+            Debug.Log($"Car Park Space [{NetworkObjectId}] is now occupied by {carOwnerId}");
             if (carOwnerId == ulong.MaxValue)
             {
                 CarInSpace = null;
@@ -69,14 +72,26 @@ namespace _Game.Car_Park
             }
         }
 
-        [ClientRpc]
-        public void SetFreeClientRpc()
+        public void SetCar(int carIdx)
         {
-            // log
-            Debug.Log($"Car Park Space [{NetworkObjectId}] is now free");
+            if (NpcCar)
+            {
+                Destroy(NpcCar);
+            }
+            
+            NpcCar = Instantiate(cars.GetCar(carIdx), transform).gameObject;
+            NpcCar.transform.position = transform.position;
+            
+            CarInSpace = null;
+            collider.isTrigger = false;
+            NpcCar.SetActive(true);
+        }
+
+        public void Free()
+        {
             CarInSpace = null;
             collider.isTrigger = true;
-            Destroy(npcCar);
+            NpcCar.SetActive(false);
         }
     }
 }
