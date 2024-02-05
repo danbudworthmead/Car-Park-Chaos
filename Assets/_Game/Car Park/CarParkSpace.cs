@@ -11,11 +11,11 @@ namespace _Game.Car_Park
     public class CarParkSpace : NetworkBehaviour
     {
         [SerializeField] private BoxCollider collider;
-        [SerializeField] private GameObject npcCar;
         [SerializeField] private Cars cars;
         
         public CarPhysics CarInSpace { get; private set; }
         public bool IsFree => CarInSpace == null;
+        public GameObject NpcCar { get; private set; }
 
         private void Update()
         {
@@ -79,13 +79,22 @@ namespace _Game.Car_Park
             Debug.Log($"Car Park Space [{NetworkObjectId}] is now free");
             CarInSpace = null;
             collider.isTrigger = true;
-            Destroy(npcCar);
+            NpcCar.SetActive(false);
         }
 
         public void SetCar(int carIdx)
         {
-            var car = Instantiate(cars.GetCar(carIdx), transform);
-            car.transform.position = transform.position;
+            if (NpcCar)
+            {
+                Destroy(NpcCar);
+            }
+            
+            NpcCar = Instantiate(cars.GetCar(carIdx), transform);
+            NpcCar.transform.position = transform.position;
+            
+            CarInSpace = null;
+            collider.isTrigger = false;
+            NpcCar.SetActive(true);
         }
     }
 }
