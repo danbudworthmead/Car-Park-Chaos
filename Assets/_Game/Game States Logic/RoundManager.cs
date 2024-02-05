@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game.Car;
 using _Game.Car_Park;
+using _Game.Car.Player;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
@@ -29,16 +30,22 @@ namespace _Game.Game_States_Logic
             timer = MatchManager.Singleton.RoundDuration;
             if (NetworkManager.Singleton.IsHost)
             {
-                var alivePlayers = NetworkManager.Singleton.ConnectedClients.Values
-                    .Select(c => c.PlayerObject.GetComponent<PlayerState>().IsAlive).Count();
-                InitClientRpc(UnityEngine.Random.Range(0, int.MaxValue), alivePlayers - 1);
+                var alivePlayers = AlivePlayers();
+                
+                // create a string of all alive players names and their client ids and print it
+                var playerNames = string.Join(", ", alivePlayers
+                    .Select(p => $"{p.GetComponent<PlayerData>().Player}"));
+                Debug.Log($"Alive players: {playerNames}");
+                
+                var alivePlayersCount = alivePlayers.Count();
+                InitClientRpc(UnityEngine.Random.Range(0, int.MaxValue), alivePlayersCount - 1);
             }
         }
-        
+
         [ClientRpc]
         private void InitClientRpc(int seed, int freeSpaces)
         {
-            Debug.Log($"Round seed has been set to {seed}");
+            Debug.Log($"Initializing round with seed {seed} and {freeSpaces} free spaces");
             
             var rng = new Random(seed);
             
@@ -104,7 +111,10 @@ namespace _Game.Game_States_Logic
                     // wait until all spaces have been taken or timer has ran out
                     if (!AnyFreeSpaces() || timer <= 0.0f)
                     {
-                        var playerIds = NetworkManager.Singleton.ConnectedClients.Keys.ToList();
+                        var playerIds = NetworkManager.Singleton.ConnectedClients
+                            .Values
+                            .Where(c => c.PlayerObject.GetComponent<PlayerState>().IsAlive)
+                            .Select(c => c.ClientId).ToList();
                         
                         // remove all players in parking spaces (if reason of loss is because of no more free spaces)
                         if(!AnyFreeSpaces())
@@ -160,8 +170,9 @@ namespace _Game.Game_States_Logic
 
         public IEnumerable<PlayerState> AlivePlayers()
         {
-            return FindObjectsOfType<PlayerState>()
-                .Where(p => p.IsAlive);
+            return NetworkManager.Singleton.ConnectedClients.Values
+                .Where(c => c.PlayerObject.GetComponent<PlayerState>().IsAlive)
+                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
         }
 
         [ClientRpc]

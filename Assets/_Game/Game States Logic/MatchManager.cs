@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using _Game.Car;
-using _Game.Car.Cars;
 using _Game.Car.Player;
 using _Game.Car.Player_Cars;
 using Scenes.Online;
@@ -18,6 +16,7 @@ namespace _Game.Game_States_Logic
 
         public RoundManager CurrentRound { get; private set; }
         public static MatchManager Singleton { get; private set; }
+        public RoundManager.RoundStates RoundState => CurrentRound ? CurrentRound.RoundState : RoundManager.RoundStates.Initializing;
 
         enum MatchState
         {

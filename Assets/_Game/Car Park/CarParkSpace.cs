@@ -2,6 +2,7 @@ using System.Linq;
 using _Game.Car;
 using _Game.Car.Cars;
 using _Game.Car.Player_Cars;
+using _Game.Game_States_Logic;
 using Unity.Netcode;
 using UnityEngine;
 #pragma warning disable CS0108, CS0114
@@ -44,6 +45,11 @@ namespace _Game.Car_Park
                 var player = other.GetComponent<PlayerState>();
                 if (player && player.IsAlive)
                 {
+                    if (MatchManager.Singleton.RoundState != RoundManager.RoundStates.Playing)
+                    {
+                        return;
+                    }
+                    
                     // check all wheels are in the parking space
                     var wheels = other.GetComponentsInChildren<WheelCollider>();
                     var inSpace = wheels.All(wheel => collider.bounds.Contains(wheel.transform.position));
@@ -92,6 +98,16 @@ namespace _Game.Car_Park
             CarInSpace = null;
             collider.isTrigger = true;
             NpcCar.SetActive(false);
+        }
+
+        public void ResetSpace()
+        {
+            CarInSpace = null;
+            collider.isTrigger = false;
+            if (NpcCar)
+            {
+                NpcCar.SetActive(true);
+            }
         }
     }
 }

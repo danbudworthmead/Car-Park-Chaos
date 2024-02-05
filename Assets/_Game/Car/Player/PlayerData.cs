@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace _Game.Car.Player_Cars
+namespace _Game.Car.Player
 {
     public class PlayerData : NetworkBehaviour
     {
