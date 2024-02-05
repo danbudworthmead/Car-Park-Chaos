@@ -72,16 +72,6 @@ namespace _Game.Car_Park
             }
         }
 
-        [ClientRpc]
-        public void SetFreeClientRpc()
-        {
-            // log
-            Debug.Log($"Car Park Space [{NetworkObjectId}] is now free");
-            CarInSpace = null;
-            collider.isTrigger = true;
-            NpcCar.SetActive(false);
-        }
-
         public void SetCar(int carIdx)
         {
             if (NpcCar)
@@ -95,6 +85,13 @@ namespace _Game.Car_Park
             CarInSpace = null;
             collider.isTrigger = false;
             NpcCar.SetActive(true);
+        }
+
+        public void Free()
+        {
+            CarInSpace = null;
+            collider.isTrigger = true;
+            NpcCar.SetActive(false);
         }
     }
 }

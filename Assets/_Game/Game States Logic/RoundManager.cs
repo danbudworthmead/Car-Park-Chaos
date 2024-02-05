@@ -6,6 +6,7 @@ using _Game.Car_Park;
 using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
+using Random = System.Random;
 
 namespace _Game.Game_States_Logic
 {
@@ -23,32 +24,37 @@ namespace _Game.Game_States_Logic
         public float timer;
         private readonly List<CarParkSpace> _parkingSpaces = new();
 
-        private NetworkVariable<int> _roundSeed = new();
-
         private void Start()
         {
             if (NetworkManager.Singleton.IsHost)
             {
-                _roundSeed.Value = UnityEngine.Random.Range(0, int.MaxValue);
-                OnRoundSeedSet(0, _roundSeed.Value);
-            }
-            else
-            {
-                _roundSeed.OnValueChanged += OnRoundSeedSet;   
+                var alivePlayers = NetworkManager.Singleton.ConnectedClients.Values
+                    .Select(c => c.PlayerObject.GetComponent<PlayerState>().IsAlive).Count();
+                InitClientRpc(UnityEngine.Random.Range(0, int.MaxValue), alivePlayers - 1);
             }
         }
-
-        private void OnRoundSeedSet(int previousvalue, int newvalue)
+        
+        [ClientRpc]
+        private void InitClientRpc(int seed, int freeSpaces)
         {
-            Debug.Log($"Round seed has been set to {newvalue}");
+            Debug.Log($"Round seed has been set to {seed}");
             
-            UnityEngine.Random.InitState(newvalue);
+            UnityEngine.Random.InitState(seed);
             
             // go through all the spaces and set random cars
             var carParkSpaces = FindObjectsOfType<CarParkSpace>();
             foreach (var space in carParkSpaces)
             {
                 space.SetCar(UnityEngine.Random.Range(0, int.MaxValue));
+            }
+
+            // free up random spaces
+            carParkSpaces.Shuffle();
+            for (var i = 0; i < freeSpaces; ++i)
+            {                
+                carParkSpaces[i].Free();
+                _parkingSpaces.Add(carParkSpaces[i]);
+                Debug.Log($"Space {carParkSpaces[i].NetworkObjectId} is now free");
             }
         }
 
@@ -86,7 +92,6 @@ namespace _Game.Game_States_Logic
             {
                 case RoundStates.Initializing:
                     SetupPlayers();
-                    FreeSpaces();
                     SetStateClientRpc(RoundStates.Countdown);
                     break;
                 case RoundStates.Countdown:
@@ -152,27 +157,6 @@ namespace _Game.Game_States_Logic
         {
             return FindObjectsOfType<PlayerState>()
                 .Where(p => p.IsAlive);
-        }
-
-        private void FreeSpaces()
-        {
-            // free up n-1 car parking spaces
-            var parkingSpaces = FindObjectsOfType<CarParkSpace>().ToList();
-            var numberOfSpacesToFree = NetworkManager.Singleton.ConnectedClients.Count - 1;
-            numberOfSpacesToFree = Mathf.Clamp(numberOfSpacesToFree, 1, parkingSpaces.Count);
-            parkingSpaces.Shuffle();
-            
-            Debug.Log($"Parking Spaces [{parkingSpaces.Count}]" +
-                      $"- Connected Clients [{NetworkManager.Singleton.ConnectedClients.Count}]" +
-                      $"- Freeing up [{numberOfSpacesToFree}] spaces " +
-                      $"- [{parkingSpaces.Count - numberOfSpacesToFree}] spaces left.");
-                    
-            for (var i = 0; i < numberOfSpacesToFree; i++)
-            {
-                var space = parkingSpaces[i];
-                space.SetFreeClientRpc();
-                _parkingSpaces.Add(space);
-            }
         }
 
         [ClientRpc]
