@@ -24,6 +24,7 @@ namespace _Game.Game_States_Logic
         public RoundStates RoundState { get; private set; } = RoundStates.Initializing;
         public float timer;
         private readonly List<CarParkSpace> _parkingSpaces = new();
+        private float _countdownTimer;
 
         private void Start()
         {
@@ -101,11 +102,28 @@ namespace _Game.Game_States_Logic
             {
                 case RoundStates.Initializing:
                     SetupPlayers();
+                    _countdownTimer = 3f;
                     SetStateClientRpc(RoundStates.Countdown);
                     break;
                 case RoundStates.Countdown:
                     // do a 3 second countdown
-                    SetStateClientRpc(RoundStates.Playing);
+                    if (_countdownTimer > 0.0f)
+                    {
+                        _countdownTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
+                        {
+                            var state = client.PlayerObject.GetComponent<PlayerState>();
+                            if (state.IsAlive)
+                            {
+                                state.UnfreezeClientRpc();
+                            }
+                        }
+                        
+                        SetStateClientRpc(RoundStates.Playing);
+                    }
                     break;
                 case RoundStates.Playing:
                     // wait until all spaces have been taken or timer has ran out
@@ -160,9 +178,7 @@ namespace _Game.Game_States_Logic
             {
                 var client = NetworkManager.Singleton.ConnectedClients[(ulong)i].PlayerObject;
                 var physics = client.GetComponent<CarPhysics>();
-                var playerState = client.GetComponent<PlayerState>();
                 var spawnLocation = spawnLocations.GetChild(i);
-                playerState.UnfreezeClientRpc();
                 physics.SetPositionRotationClientRpc(spawnLocation.position, spawnLocation.rotation);
             }
         }
