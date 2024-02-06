@@ -39,6 +39,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 0.227
     - _Colour_Threshold: 0.107
     - _Depth_Multiplier: 1224106
     - _Depth_Scaler: 698
