@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using Unity.Services.Authentication;
 using UnityEngine;
 
 namespace Scenes.Online.LobbyViewer
@@ -8,9 +10,12 @@ namespace Scenes.Online.LobbyViewer
         [SerializeField] private Transform lobbyListParent;
         [SerializeField] private GameObject lobbyPanelPrefab;
 
-        private void Start()
+        private void Update()
         {
-            InvokeRepeating(nameof(RefreshLobbies), 1f, 3f);
+            if (AuthenticationService.Instance.IsAuthorized && !IsInvoking(nameof(RefreshLobbies)))
+            {
+                InvokeRepeating(nameof(RefreshLobbies), 0f, 3f);
+            }
         }
 
         public async Task RefreshLobbies()
