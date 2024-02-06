@@ -54,7 +54,7 @@ namespace _Game.Game_States_Logic
                             || RelayManager.Instance.PlayersInLobby.Count >
                             NetworkManager.Singleton.ConnectedClients.Count)
                         {
-                            if (NetworkManager.Singleton.ConnectedClients.Count == 1)
+                            if (RelayManager.Instance == null)
                             {
                                 // single player fix
                                 var client = NetworkManager.Singleton.LocalClient;
