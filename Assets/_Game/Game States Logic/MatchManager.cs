@@ -54,14 +54,6 @@ namespace _Game.Game_States_Logic
                             || RelayManager.Instance.PlayersInLobby.Count >
                             NetworkManager.Singleton.ConnectedClients.Count)
                         {
-                            if (NetworkManager.Singleton.ConnectedClients.Count == 1)
-                            {
-                                // single player fix
-                                var client = NetworkManager.Singleton.LocalClient;
-                                var chosenCarIdx = client.PlayerObject.GetComponent<PlayerData>().carChoice.Value;
-                                client.PlayerObject.GetComponent<Player>().InstantiateCarClientRpc(chosenCarIdx);
-                                SetMatchStateClientRpc(MatchState.Playing);
-                            }
                             return;
                         }
 
