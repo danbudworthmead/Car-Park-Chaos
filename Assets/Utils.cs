@@ -60,5 +60,12 @@ public static class Utils
             spaces[i].name = $"Space ({i})";
         }
     }
+    
+    [MenuItem("Utils/Fix spaces array")]
+    public static void FixSpacesArray()
+    {
+        var spaces = Object.FindObjectsOfType<CarParkSpace>();
+        Object.FindObjectOfType<CarParkSpaces>().spaces = spaces;
+    }
 #endif
 }
