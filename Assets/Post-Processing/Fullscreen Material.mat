@@ -39,12 +39,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Colour_Threshold: 0.27
-    - _Depth_Multiplier: 21
+    - _Colour_Threshold: 0.107
+    - _Depth_Multiplier: 1224106
+    - _Depth_Scaler: 698
     - _Depth_Step: 170
-    - _Depth_Threshold: 0.000546
-    - _Normal_Threshold: 0.88
+    - _Depth_Threshold: 1000
+    - _Normal_Threshold: 0.62
     - _OVERLAY: 1
+    - _Outline_Multipler: 262
+    - _Outline_Scale: 1.76
     - _VigPower: 5
     m_Colors:
     - _BaseCol: {r: 1, g: 0.4641263, b: 0, a: 0}
