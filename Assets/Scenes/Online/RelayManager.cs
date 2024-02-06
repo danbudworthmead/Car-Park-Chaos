@@ -30,6 +30,7 @@ namespace Scenes.Online
             {
                 var allocation = await RelayService.Instance.CreateAllocationAsync(3);
                 code = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+                Debug.Log("Created relay with code: " + code);
                 RelayServerData = new RelayServerData(allocation, "dtls");
                 AmHost = true;
                 PlayersInLobby = playersInLobby;
@@ -45,6 +46,7 @@ namespace Scenes.Online
 
         public async Task JoinRelay(string joinCode)
         {
+            Debug.Log("Joining relay with code: " + joinCode);
             try
             {
                 var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);

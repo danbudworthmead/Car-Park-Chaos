@@ -1,24 +1,29 @@
+using _Game.Car.Player;
 using _Game.Car.Player_Cars;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 
-public class Nametag : MonoBehaviour
+namespace _Game.Car
 {
-    [SerializeField] private TextMeshPro textObject;
-    private PlayerData data;
-    private void Update()
+    public class Nametag : MonoBehaviour
     {
-        if (!data)
+        [SerializeField] private TextMeshPro textObject;
+        private PlayerData _data;
+        private PlayerState _state;
+    
+        private void Update()
         {
-            data = transform.parent.GetComponent<PlayerData>();
-            return;
-        }
+            if (!_data)
+            {
+                _data = transform.parent.GetComponent<PlayerData>();
+                _state = _data.GetComponent<PlayerState>();
+                return;
+            }
 
-        textObject.text = data.Player;
-        transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.forward,
-        Camera.main.transform.rotation * Vector3.up);
+            textObject.text = $"{_data.Player}: {(_state.IsAlive ? "Alive" : "Dead")}";
+            var rotation = UnityEngine.Camera.main.transform.rotation;
+            transform.LookAt(transform.position + rotation * Vector3.forward, 
+                rotation * Vector3.up);
+        }
     }
 }
