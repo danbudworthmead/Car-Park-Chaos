@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -28,6 +29,8 @@ namespace _Game.Car
         private float _currentTurnAngle = 0f;
         
         public float Speed { get; private set; }
+        
+        public float SpeedDotProduct { get; private set; }
 
         public NetworkVariable<float> EngineRPM = new (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         
@@ -68,9 +71,10 @@ namespace _Game.Car
             frontRight.steerAngle = _currentTurnAngle;
         
             Speed = rigidbody.velocity.magnitude;
-            
+
             if (IsOwner) EngineRPM.Value = Speed;
             
+            SpeedDotProduct = Math.Abs(Vector3.Dot(rigidbody.transform.right, rigidbody.velocity))/5f;
         }
 
         private void Update()
