@@ -58,6 +58,6 @@ public class CarEffects : MonoBehaviour
     private void LateUpdate()
     {
         var rotation = skidMarkParent.rotation.eulerAngles;
-        skidMarkParent.rotation = Quaternion.Euler(90,rotation.y,rotation.z);
+        skidMarkParent.rotation = Quaternion.Euler(0,rotation.y,rotation.z);
     }
 }
