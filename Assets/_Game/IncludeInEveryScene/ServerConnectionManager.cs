@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _Game.Car.Player;
-using _Game.Car.Player_Cars;
 using Scenes.Online;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -12,7 +11,7 @@ using Unity.Services.Relay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scenes.Game
+namespace _Game.IncludeInEveryScene
 {
     public class ServerConnectionManager : MonoBehaviour
     {
