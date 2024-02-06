@@ -309,6 +309,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bin (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4242427142585241107, guid: 077b55f9c45013f46beb4236239ad5a4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7380635048840722060, guid: 077b55f9c45013f46beb4236239ad5a4,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -471,6 +476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bollard (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917912715515774216, guid: ee2dd1e42d074654daf4938146f4e116,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4854709690331882135, guid: ee2dd1e42d074654daf4938146f4e116,
         type: 3}
@@ -703,6 +713,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bin
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242427142585241107, guid: 077b55f9c45013f46beb4236239ad5a4,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7380635048840722060, guid: 077b55f9c45013f46beb4236239ad5a4,
         type: 3}
@@ -3513,6 +3528,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bollard
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917912715515774216, guid: ee2dd1e42d074654daf4938146f4e116,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4854709690331882135, guid: ee2dd1e42d074654daf4938146f4e116,
         type: 3}
