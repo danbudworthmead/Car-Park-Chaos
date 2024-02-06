@@ -152,19 +152,18 @@ namespace _Game.Game_States_Logic
 
         private void SetupPlayers()
         {
-            Transform spawnLocations = GameObject.FindWithTag("SpawnLocations").transform;
+            var spawnLocations = GameObject.FindWithTag("SpawnLocations").transform;
             var clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToList();
             clientIds.Shuffle();
 
-            for (int i = 0; i < clientIds.Count; ++i)
+            for (var i = 0; i < clientIds.Count; ++i)
             {
                 var client = NetworkManager.Singleton.ConnectedClients[(ulong)i].PlayerObject;
                 var physics = client.GetComponent<CarPhysics>();
                 var playerState = client.GetComponent<PlayerState>();
                 var spawnLocation = spawnLocations.GetChild(i);
                 playerState.UnfreezeClientRpc();
-                physics.SetPositionClientRpc(spawnLocation.position);
-                physics.SetRotationClientRpc(spawnLocation.rotation);
+                physics.SetPositionRotationClientRpc(spawnLocation.position, spawnLocation.rotation);
             }
         }
 

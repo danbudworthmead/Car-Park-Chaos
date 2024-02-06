@@ -96,14 +96,9 @@ namespace _Game.Car
         }
         
         [ClientRpc]
-        public void SetPositionClientRpc(Vector3 position)
+        public void SetPositionRotationClientRpc(Vector3 position, Quaternion rotation)
         {
             transform.position = position;
-        }
-
-        [ClientRpc]
-        public void SetRotationClientRpc(Quaternion rotation)
-        {
             transform.rotation = rotation;
         }
     }
