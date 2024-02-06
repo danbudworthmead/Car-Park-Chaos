@@ -17,6 +17,7 @@ public static class Utils
         }
     }
     
+#if UNITY_EDITOR
     [MenuItem("Utils/Duplicate space finder")]
     public static void FindDuplicateSpaces()
     {
@@ -59,4 +60,5 @@ public static class Utils
             spaces[i].name = $"Space ({i})";
         }
     }
+#endif
 }
