@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using _Game.Car;
 using _Game.Car.Cars;
@@ -17,6 +18,11 @@ namespace _Game.Car_Park
         public CarPhysics CarInSpace { get; private set; }
         public bool IsFree => CarInSpace == null;
         public GameObject NpcCar { get; private set; }
+
+        private void Start()
+        {
+            name = $"Space ({NetworkObjectId})";
+        }
 
         private void Update()
         {
