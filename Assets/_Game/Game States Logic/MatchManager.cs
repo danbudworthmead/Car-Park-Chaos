@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using _Game.Car.Player;
 using _Game.Car.Player_Cars;
 using Scenes.Online;
 using Unity.Netcode;
@@ -11,10 +11,12 @@ namespace _Game.Game_States_Logic
     public class MatchManager : NetworkBehaviour
     {
         [SerializeField] private NetworkObject roundLogicPrefab;
+        
         public float RoundDuration = 60;
 
         public RoundManager CurrentRound { get; private set; }
         public static MatchManager Singleton { get; private set; }
+        public RoundManager.RoundStates RoundState => CurrentRound ? CurrentRound.RoundState : RoundManager.RoundStates.Initializing;
 
         enum MatchState
         {
@@ -55,7 +57,7 @@ namespace _Game.Game_States_Logic
                             return;
                         }
 
-                        // check all players have cars
+                        // check all players have players states
                         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
                         {
                             if (client.PlayerObject == null)
@@ -63,6 +65,19 @@ namespace _Game.Game_States_Logic
 
                             if (client.PlayerObject.GetComponent<PlayerState>() == null)
                                 return;
+                            
+                            if (client.PlayerObject.GetComponent<PlayerData>() == null)
+                                return;
+                            
+                            if (client.PlayerObject.GetComponent<PlayerData>().carChoice.Value == -1)
+                                return;
+                        }
+                        
+                        // spawn the players cars
+                        foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
+                        {
+                            var chosenCarIdx = client.PlayerObject.GetComponent<PlayerData>().carChoice.Value;
+                            client.PlayerObject.GetComponent<Player>().InstantiateCarClientRpc(chosenCarIdx);
                         }
 
                         SetMatchStateClientRpc(MatchState.Playing);
@@ -79,10 +94,7 @@ namespace _Game.Game_States_Logic
                         }
                         else
                         {
-                            var players = NetworkManager.Singleton.ConnectedClients.Values
-                                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
-                            var playerStates = players as PlayerState[] ?? players.ToArray();
-                            if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
+                            if (AtLeastOnePlayerAlive())
                             {
                                 CurrentRound = InitRound();
                             } 
@@ -104,6 +116,22 @@ namespace _Game.Game_States_Logic
             if (CurrentRound == null)
                 CurrentRound = GetComponentInChildren<RoundManager>();
 
+        }
+
+        private bool AtLeastOnePlayerAlive()
+        {
+            var onePlayerAlive = false;
+            
+            var players = NetworkManager.Singleton.ConnectedClients.Values
+                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
+            var playerStates = players as PlayerState[] ?? players.ToArray();
+
+            if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
+            {
+                onePlayerAlive = true;
+            }
+            
+            return onePlayerAlive;
         }
 
         private RoundManager InitRound()
