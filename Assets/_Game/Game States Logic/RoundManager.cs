@@ -55,6 +55,11 @@ namespace _Game.Game_States_Logic
             foreach (var space in carParkSpaces)
             {
                 space.SetCar(rng.Next(int.MaxValue));
+                
+                if (rng.Next(2) == 0)
+                {
+                    space.NpcCar.transform.Rotate(Vector3.forward, 180);
+                }
             }
 
             // free up random spaces
