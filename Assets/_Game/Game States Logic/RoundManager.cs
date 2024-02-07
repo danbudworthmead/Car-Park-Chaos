@@ -109,6 +109,7 @@ namespace _Game.Game_States_Logic
                     SetupPlayers();
                     _countdownTimer = 3f;
                     SetStateClientRpc(RoundStates.Countdown);
+                    NotificationManager.Singleton.NewNotification("Countdown starting!");
                     break;
                 case RoundStates.Countdown:
                     // do a 3 second countdown
@@ -126,7 +127,8 @@ namespace _Game.Game_States_Logic
                                 state.UnfreezeClientRpc();
                             }
                         }
-                        
+
+                        NotificationManager.Singleton.NewNotification("Begin game!");
                         SetStateClientRpc(RoundStates.Playing);
                     }
                     break;

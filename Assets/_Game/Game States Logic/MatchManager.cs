@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using _Game.Car;
 using _Game.Car.Player;
 using _Game.Car.Player_Cars;
 using Scenes.Online;
@@ -10,6 +11,14 @@ namespace _Game.Game_States_Logic
 {
     public class MatchManager : NetworkBehaviour
     {
+        public enum GameEventType
+        {
+            KnockedOut,
+            Parked
+        }
+
+        public Action<GameEventType, CarPhysics> onEvent;
+
         [SerializeField] private NetworkObject roundLogicPrefab;
         
         public float RoundDuration = 60;
