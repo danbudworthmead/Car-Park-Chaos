@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_Game/Car/CarEffects.cs.meta
+guid: 4d34c7ceb7494fd49b5079bbade68c75
+========
 guid: e601ea5b70b8d46418503e3655c9d137
+>>>>>>>> main:Assets/_Game/Car/Cars/Car.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

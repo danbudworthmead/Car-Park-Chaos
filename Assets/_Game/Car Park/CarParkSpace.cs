@@ -26,8 +26,6 @@ namespace _Game.Car_Park
 
         private void Update()
         {
-            GetComponentInChildren<MeshRenderer>().material.color = CarInSpace ? Color.green : Color.red;
-            
             if (NetworkManager.Singleton.IsHost)
             {
                 if (CarInSpace)
