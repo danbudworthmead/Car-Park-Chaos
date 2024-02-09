@@ -15,7 +15,6 @@ namespace _Game.IncludeInEveryScene
 {
     public class ServerConnectionManager : MonoBehaviour
     {
-        [SerializeField] private NetworkObject playerPrefab;
         [SerializeField] private GameObject uiPrefab;
         
         private Dictionary<ulong, NetworkObject> _players = new();
@@ -63,14 +62,6 @@ namespace _Game.IncludeInEveryScene
 
             if (NetworkManager.Singleton.IsHost)
             {
-                var playerCar = Instantiate(playerPrefab);
-                playerCar.SpawnAsPlayerObject(clientId);
-                while (playerCar.IsSpawned == false)
-                {
-                    await Task.Yield();
-                }
-                _players.Add(clientId, playerCar);
-
                 if (RelayManager.Instance)
                 {
                     var playersInLobby = RelayManager.Instance.PlayersInLobby;

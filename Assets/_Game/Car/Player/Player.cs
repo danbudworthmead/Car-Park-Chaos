@@ -1,19 +1,8 @@
-using Unity.Netcode;
-using UnityEngine;
-
 namespace _Game.Car.Player
 {
-    public class Player : NetworkBehaviour
+    public class Player
     {
-        [SerializeField] private Cars.Cars carDatabase;
-        [SerializeField] private Transform carPivot;
-
-        [ClientRpc]
-        public void InstantiateCarClientRpc(int carIdx)
-        {
-            // log this with owner id
-            Debug.Log($"Player {OwnerClientId} is spawning car {carIdx}");
-            Instantiate(carDatabase.GetCar(carIdx), carPivot.position, carPivot.rotation, carPivot);
-        }
+        public bool IsAlive;
+        public ulong ClientId;
     }
 }

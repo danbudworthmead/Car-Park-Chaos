@@ -5,18 +5,13 @@ namespace _Game.Car
 {
     public class CarPhysics : NetworkBehaviour
     {
-        [SerializeField] private WheelCollider frontLeft;
-        [SerializeField] private WheelCollider frontRight;
-        [SerializeField] private WheelCollider rearLeft;
-        [SerializeField] private WheelCollider rearRight;
-
         [SerializeField] private float acceleration = 500f;
         [SerializeField] private float breakingForce = 300f;
         [SerializeField] private float maxTurnAngle = 15f;
 
-        [SerializeField] private new Rigidbody rigidbody;
+        [SerializeField] public new Rigidbody rigidbody;
         
-        private Cars.Car _car;
+        [SerializeField] public Car car;
 
         private float _currentAcceleration = 0f;
         private float _currentBrakeForce = 0f;
@@ -35,9 +30,9 @@ namespace _Game.Car
         {
             _currentBrakeForce = brake * breakingForce;
 
-            if (_car && _car.rearHeadlights)
+            if (car && car.rearHeadlights)
             {
-                _car.rearHeadlights.SetOn(brake > 0);   
+                car.rearHeadlights.SetOn(brake > 0);   
             }
         }
 
@@ -48,29 +43,29 @@ namespace _Game.Car
 
         private void FixedUpdate()
         { 
-            if (!_car)
+            if (!car)
             {
-                _car = GetComponentInChildren<Cars.Car>();
+                car = GetComponentInChildren<Car>();
                 return;
             }
             
             var accel = _currentAcceleration - _currentBrakeForce;
         
             // apply acceleration to the front wheels
-            frontLeft.motorTorque = accel;
-            frontRight.motorTorque = accel;
+            car.wheels.frontLeft.motorTorque = accel;
+            car.wheels.frontRight.motorTorque = accel;
         
             // apply braking to all wheels
             var brakeForce = accel > 0 ? _currentBrakeForce : _currentAcceleration;
         
-            frontLeft.brakeTorque = brakeForce;
-            frontRight.brakeTorque = brakeForce;
-            rearLeft.brakeTorque = brakeForce;
-            rearRight.brakeTorque = brakeForce;
+            car.wheels.frontLeft.brakeTorque = brakeForce;
+            car.wheels.frontRight.brakeTorque = brakeForce;
+            car.wheels.rearLeft.brakeTorque = brakeForce;
+            car.wheels.rearRight.brakeTorque = brakeForce;
         
             // handle turning
-            frontLeft.steerAngle = _currentTurnAngle;
-            frontRight.steerAngle = _currentTurnAngle;
+            car.wheels.frontLeft.steerAngle = _currentTurnAngle;
+            car.wheels.frontRight.steerAngle = _currentTurnAngle;
         
             Speed = rigidbody.velocity.magnitude;
             
@@ -80,12 +75,12 @@ namespace _Game.Car
 
         private void Update()
         {
-            if (_car == null) return;
+            if (car == null) return;
             
-            UpdateWheel(frontLeft, _car.frontLeftWheel);
-            UpdateWheel(frontRight, _car.frontRightWheel);
-            UpdateWheel(rearLeft, _car.rearLeftWheel);
-            UpdateWheel(rearRight, _car.rearRightWheel);
+            // UpdateWheel(frontLeft, _car.frontLeftWheel);
+            // UpdateWheel(frontRight, _car.frontRightWheel);
+            // UpdateWheel(rearLeft, _car.rearLeftWheel);
+            // UpdateWheel(rearRight, _car.rearRightWheel);
         }
 
         private static void UpdateWheel(WheelCollider col, Transform t)
@@ -100,6 +95,12 @@ namespace _Game.Car
         {
             transform.position = position;
             transform.rotation = rotation;
+        }
+
+        [ClientRpc]
+        public void UnfreezeClientRpc()
+        {
+            rigidbody.constraints = RigidbodyConstraints.None;
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using _Game.Car;
 using _Game.Car_Park;
 using _Game.Car.Player;
-using _Game.Car.Player_Cars;
 using Unity.Netcode;
 using UnityEngine;
 using Random = System.Random;
@@ -31,15 +30,12 @@ namespace _Game.Game_States_Logic
             timer = MatchManager.Singleton.RoundDuration;
             if (NetworkManager.Singleton.IsHost)
             {
-                var alivePlayers = AlivePlayers();
-                
-                // create a string of all alive players names and their client ids and print it
-                var playerNames = string.Join(", ", alivePlayers
-                    .Select(p => $"{p.GetComponent<PlayerData>().Player}"));
-                Debug.Log($"Alive players: {playerNames}");
+                var alivePlayers = MatchManager.Singleton.GetAlivePlayers();
                 
                 var alivePlayersCount = alivePlayers.Count();
-                InitClientRpc(UnityEngine.Random.Range(0, int.MaxValue), alivePlayersCount - 1);
+                var spaces = alivePlayersCount - 1;
+                spaces = Mathf.Max(spaces, 1);
+                InitClientRpc(UnityEngine.Random.Range(0, int.MaxValue), spaces);
             }
         }
 
@@ -120,8 +116,14 @@ namespace _Game.Game_States_Logic
                     {
                         foreach (var client in NetworkManager.Singleton.ConnectedClients.Values)
                         {
-                            var state = client.PlayerObject.GetComponent<PlayerState>();
-                            if (state.IsAlive)
+                            var isAlive = MatchManager.Singleton.IsAlive(client.ClientId);
+                            if (!isAlive)
+                            {
+                                continue;
+                            }
+                            
+                            var state = client.PlayerObject.GetComponent<CarPhysics>();
+                            if (state)
                             {
                                 state.UnfreezeClientRpc();
                             }
@@ -182,17 +184,10 @@ namespace _Game.Game_States_Logic
             for (var i = 0; i < clientIds.Count; ++i)
             {
                 var client = NetworkManager.Singleton.ConnectedClients[(ulong)i].PlayerObject;
-                var physics = client.GetComponent<CarPhysics>();
+                var player = client.GetComponent<CarPhysics>();
                 var spawnLocation = spawnLocations.GetChild(i);
-                physics.SetPositionRotationClientRpc(spawnLocation.position, spawnLocation.rotation);
+                player.SetPositionRotationClientRpc(spawnLocation.position, spawnLocation.rotation);
             }
-        }
-
-        public IEnumerable<PlayerState> AlivePlayers()
-        {
-            return NetworkManager.Singleton.ConnectedClients.Values
-                .Where(c => c.PlayerObject.GetComponent<PlayerState>().IsAlive)
-                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
         }
 
         [ClientRpc]

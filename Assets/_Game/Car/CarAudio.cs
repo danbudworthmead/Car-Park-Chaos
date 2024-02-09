@@ -6,13 +6,13 @@ namespace _Game.Car
     public class CarAudio : NetworkBehaviour
     {
         [SerializeField]
-        private CarPhysics carPhysics;
+        public CarPhysics carPhysics;
     
         [SerializeField]
-        private AudioSource engineAudio;
+        public AudioSource engineAudio;
         
         [SerializeField]
-        private AudioSource hornAudio;
+        public AudioSource hornAudio;
     
         // Start is called before the first frame update
         private void Start()
