@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace _Game.Car.Cars
 {
-    
     [Serializable]
     [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/AllCarData", order = 1)]
     public class Cars : ScriptableObject

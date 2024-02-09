@@ -30,8 +30,9 @@ namespace _Game.Camera
             }
             else
             {
-                // follow the target but keep upright
+                // follow the target but keep upright using lerp
                 transform.position = _target.position;
+                
                 var newRot = Quaternion.Euler(0, _target.eulerAngles.y, 0);
                 transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * 2.5f);
             }

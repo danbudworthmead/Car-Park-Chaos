@@ -21,12 +21,14 @@ namespace _Game.Car
 
         public NetworkVariable<float> EngineRPM = new (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         
-        public void SetAcceleration(float accelerator)
+        [ServerRpc]
+        public void SetAccelerationServerRpc(float accelerator)
         {
             _currentAcceleration = accelerator * acceleration;
         }
 
-        public void SetBrake(float brake)
+        [ServerRpc]
+        public void SetBrakeServerRpc(float brake)
         {
             _currentBrakeForce = brake * breakingForce;
 
@@ -36,7 +38,8 @@ namespace _Game.Car
             }
         }
 
-        public void SetSteering(float steering)
+        [ServerRpc]
+        public void SetSteeringServerRpc(float steering)
         {
             _currentTurnAngle = steering * maxTurnAngle;
         }

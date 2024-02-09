@@ -29,19 +29,19 @@ namespace _Game.Car
         public void OnAccelerate(InputValue value)
         {
             if (!_carPhysics) return;
-            _carPhysics.SetAcceleration(value.Get<float>());
+            _carPhysics.SetAccelerationServerRpc(value.Get<float>());
         }
     
         public void OnBrake(InputValue value)
         {
             if (!_carPhysics) return;
-            _carPhysics.SetBrake(value.Get<float>());
+            _carPhysics.SetBrakeServerRpc(value.Get<float>());
         }
 
         public void OnSteering(InputValue value)
         {
             if (!_carPhysics) return;
-            _carPhysics.SetSteering(value.Get<float>());
+            _carPhysics.SetSteeringServerRpc(value.Get<float>());
         }
 
         public void OnHorn(InputValue value)

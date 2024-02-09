@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4869140125669584495}
   - component: {fileID: 3565639863311769756}
   - component: {fileID: 3334438278469509247}
-  - component: {fileID: -2662356774556829856}
+  - component: {fileID: 86992348203307959}
   m_Layer: 0
   m_Name: Front Right Wheel
   m_TagString: Untagged
@@ -167,7 +167,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &-2662356774556829856
+--- !u!146 &86992348203307959
 WheelCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 4819538364621175459}
   - component: {fileID: 8055781801055770836}
   - component: {fileID: 5233059360701328519}
-  - component: {fileID: 3229304698183940582}
+  - component: {fileID: -5120124206683194182}
   m_Layer: 0
   m_Name: Front Left Wheel
   m_TagString: Untagged
@@ -539,7 +539,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &3229304698183940582
+--- !u!146 &-5120124206683194182
 WheelCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 8840885068503107769}
   - component: {fileID: 7696390720222067087}
   - component: {fileID: 4065121379113439374}
-  - component: {fileID: 7005561045900094758}
+  - component: {fileID: -8046254375283873411}
   m_Layer: 0
   m_Name: Rear Right Wheel
   m_TagString: Untagged
@@ -662,7 +662,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &7005561045900094758
+--- !u!146 &-8046254375283873411
 WheelCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -793,15 +793,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5641834364053619455}
-  - component: {fileID: 3386074545553563190}
-  - component: {fileID: -686558448944359045}
-  - component: {fileID: 4711492592044382242}
-  - component: {fileID: 4122300408659882680}
-  - component: {fileID: 2687531822314880350}
-  - component: {fileID: 3048745543225906963}
-  - component: {fileID: -3864236580547626885}
-  - component: {fileID: 3301714521098362851}
-  - component: {fileID: 7087631628694823709}
+  - component: {fileID: 3346926828618031330}
+  - component: {fileID: -1869063785754744452}
+  - component: {fileID: 2874604851661711208}
+  - component: {fileID: -1613730808826056977}
+  - component: {fileID: -5075568458308606724}
+  - component: {fileID: 5534820727018997659}
+  - component: {fileID: 8574519669729377717}
+  - component: {fileID: -7256399767195562480}
   m_Layer: 0
   m_Name: car
   m_TagString: Untagged
@@ -837,7 +836,27 @@ Transform:
   - {fileID: 8840885068503107769}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3386074545553563190
+--- !u!114 &3346926828618031330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4971977127259953221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 461611852
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &-1869063785754744452
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -860,13 +879,13 @@ MonoBehaviour:
   body: {fileID: 8076164466089193262}
   engine: {fileID: 7956246338029076407}
   horn: {fileID: 6121047332512928731}
-  rearHeadlights: {fileID: -6966055698375017893}
+  rearHeadlights: {fileID: 4195067154896058497}
   wheels:
-    frontLeft: {fileID: 3229304698183940582}
-    frontRight: {fileID: -2662356774556829856}
-    rearLeft: {fileID: -765320081754733897}
-    rearRight: {fileID: 7005561045900094758}
---- !u!54 &-686558448944359045
+    frontLeft: {fileID: -5120124206683194182}
+    frontRight: {fileID: 86992348203307959}
+    rearLeft: {fileID: -1216665089401973201}
+    rearRight: {fileID: -8046254375283873411}
+--- !u!54 &2874604851661711208
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -893,81 +912,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4711492592044382242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4971977127259953221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
---- !u!114 &4122300408659882680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4971977127259953221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2687531822314880350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4971977127259953221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!114 &3048745543225906963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4971977127259953221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66226a1bedd07e649ac81da92ea6faba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-3864236580547626885
+--- !u!114 &-1613730808826056977
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -982,11 +927,11 @@ MonoBehaviour:
   acceleration: 500
   breakingForce: 300
   maxTurnAngle: 15
-  rigidbody: {fileID: -686558448944359045}
-  car: {fileID: 3386074545553563190}
+  rigidbody: {fileID: 2874604851661711208}
+  car: {fileID: -1869063785754744452}
   EngineRPM:
     m_InternalValue: 0
---- !u!114 &3301714521098362851
+--- !u!114 &-5075568458308606724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -998,10 +943,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c36d6977b75dfc43871ed157e48dcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPhysics: {fileID: -3864236580547626885}
-  engineAudio: {fileID: 7886810606377069837}
-  hornAudio: {fileID: 4529867025390664851}
---- !u!65 &7087631628694823709
+  carPhysics: {fileID: -1613730808826056977}
+  engineAudio: {fileID: -1777195966863902117}
+  hornAudio: {fileID: 170226783026755247}
+--- !u!114 &5534820727018997659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4971977127259953221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 1
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 1
+--- !u!114 &8574519669729377717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4971977127259953221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &-7256399767195562480
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1033,7 +1020,7 @@ GameObject:
   - component: {fileID: 3998085108123495722}
   - component: {fileID: 6928414739626609849}
   - component: {fileID: 7658645873365424362}
-  - component: {fileID: -765320081754733897}
+  - component: {fileID: -1216665089401973201}
   m_Layer: 0
   m_Name: Rear Left Wheel
   m_TagString: Untagged
@@ -1106,7 +1093,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!146 &-765320081754733897
+--- !u!146 &-1216665089401973201
 WheelCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1154,7 +1141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7956246338029076407}
-  - component: {fileID: 7886810606377069837}
+  - component: {fileID: -1777195966863902117}
   m_Layer: 0
   m_Name: Engine
   m_TagString: Untagged
@@ -1177,7 +1164,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5641834364053619455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &7886810606377069837
+--- !u!82 &-1777195966863902117
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1367,7 +1354,7 @@ GameObject:
   - component: {fileID: 5855847047817311303}
   - component: {fileID: 3030811707408399323}
   - component: {fileID: 4420019887194551041}
-  - component: {fileID: -6966055698375017893}
+  - component: {fileID: 4195067154896058497}
   m_Layer: 0
   m_Name: Rear Lights
   m_TagString: Untagged
@@ -1440,7 +1427,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-6966055698375017893
+--- !u!114 &4195067154896058497
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1463,7 +1450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6121047332512928731}
-  - component: {fileID: 4529867025390664851}
+  - component: {fileID: 170226783026755247}
   m_Layer: 0
   m_Name: Horn
   m_TagString: Untagged
@@ -1486,7 +1473,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5641834364053619455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &4529867025390664851
+--- !u!82 &170226783026755247
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

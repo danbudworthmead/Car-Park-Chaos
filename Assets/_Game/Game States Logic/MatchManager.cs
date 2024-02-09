@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game.Car.Cars;
 using _Game.Car.Player;
+using Scenes.Online;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -52,6 +53,11 @@ namespace _Game.Game_States_Logic
                 switch (_matchState)
                 {
                     case MatchState.Initializing:
+                        if (WaitingForPlayers())
+                        {
+                            return;
+                        }
+                        
                         InitPlayers();
                         SpawnCars();
                         SetMatchStateClientRpc(MatchState.Playing);
@@ -68,7 +74,7 @@ namespace _Game.Game_States_Logic
                         }
                         else
                         {
-                            if (AtLeastOnePlayerAlive())
+                            if (AtLeastTwoPlayersAlive())
                             {
                                 CurrentRound = InitRound();
                             } 
@@ -90,6 +96,12 @@ namespace _Game.Game_States_Logic
             if (CurrentRound == null)
                 CurrentRound = GetComponentInChildren<RoundManager>();
 
+        }
+
+        private bool WaitingForPlayers()
+        {
+            if (RelayManager.Instance == null) return true;
+            return NetworkManager.Singleton.ConnectedClients.Count < RelayManager.Instance.PlayersInLobby.Count;
         }
 
         private void SpawnCars()
@@ -117,20 +129,18 @@ namespace _Game.Game_States_Logic
             }
         }
 
-        private bool AtLeastOnePlayerAlive()
+        private bool AtLeastTwoPlayersAlive()
         {
-            var onePlayerAlive = false;
+            var twoPlayersAlive = false;
             
-            var players = NetworkManager.Singleton.ConnectedClients.Values
-                .Select(c => c.PlayerObject.GetComponent<PlayerState>());
-            var playerStates = players as PlayerState[] ?? players.ToArray();
+            var alive = _players.Count(p => p.IsAlive);
 
-            if (playerStates.Count() == 1 || playerStates.Count(p => p.IsAlive) > 1)
+            if (_players.Count == 1 || alive > 1)
             {
-                onePlayerAlive = true;
+                twoPlayersAlive = true;
             }
             
-            return onePlayerAlive;
+            return twoPlayersAlive;
         }
 
         private RoundManager InitRound()

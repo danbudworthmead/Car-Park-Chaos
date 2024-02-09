@@ -1,4 +1,6 @@
-﻿using _Game.Car;
+﻿using System.Linq;
+using _Game.Car;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Editor
@@ -10,10 +12,10 @@ namespace Editor
         {
             CreateCar(true);
             CreateCar(false);
-            
+
             // save the prefab
             UnityEditor.AssetDatabase.SaveAssets();
-            
+
             // log success
             Debug.Log("Prefab created");
         }
@@ -31,15 +33,15 @@ namespace Editor
 
             var name = selected.name;
             var folder = $"Assets/_Game/Car/Cars/{(isDrivable ? "Player" : "Npc")}";
-            
+
             // create the folder if it doesn't exist
             if (!UnityEditor.AssetDatabase.IsValidFolder(folder))
             {
                 UnityEditor.AssetDatabase.CreateFolder("Assets/_Game/Car/Cars", isDrivable ? "Player" : "Npc");
             }
-            
+
             var path = $"{folder}/{name}.prefab";
-            
+
             var prefab = UnityEditor.PrefabUtility.SaveAsPrefabAsset(selected, path, out var success);
             if (!success)
             {
@@ -47,7 +49,7 @@ namespace Editor
                 Debug.LogError("Prefab creation failed");
                 return;
             }
-            
+
             // add car components
             var drivable = prefab.AddComponent<Car>();
             drivable.transform.position = Vector3.zero;
@@ -59,7 +61,7 @@ namespace Editor
             {
                 drivable.CreateNpcCarPrefab();
             }
-            
+
             // add to the scriptable object database
             var databasePath = $"Assets/_Game/Car/Cars/{(isDrivable ? "PlayerCars" : "NpcCars")}.asset";
             var carDatabase = UnityEditor.AssetDatabase.LoadAssetAtPath<_Game.Car.Cars.Cars>(databasePath);
@@ -69,9 +71,41 @@ namespace Editor
                 carDatabase = ScriptableObject.CreateInstance<_Game.Car.Cars.Cars>();
                 UnityEditor.AssetDatabase.CreateAsset(carDatabase, databasePath);
             }
-            
+
             // add the car to the database
             carDatabase.AddCar(prefab.GetComponent<Car>());
+
+            // save the database
+            UnityEditor.EditorUtility.SetDirty(carDatabase);
+
+            // log car created and the isDrivable state and the database it was added to
+            Debug.Log($"Car created: {name} {(isDrivable ? "Player" : "Npc")} added to {databasePath}");
+
+            if (drivable.GetComponent<NetworkObject>())
+            {
+                // add to the DefaultNetworkPrefabs.asset
+                var networkPrefabs =
+                    UnityEditor.AssetDatabase.LoadAssetAtPath<NetworkPrefabsList>(
+                        "Assets/NetworkConfig/DefaultNetworkPrefabs.asset");
+                if (networkPrefabs != null)
+                {
+                    // check prefab is not already in the list
+                    if (networkPrefabs.PrefabList.Any(networkPrefab => networkPrefab.Prefab == prefab))
+                    {
+                        Debug.Log($"Car already in DefaultNetworkPrefabs.asset: {name}");
+                        return;
+                    }
+                    
+                    var prefabComponent = new NetworkPrefab
+                    {
+                        Prefab = prefab,
+                    };
+                    networkPrefabs.Add(prefabComponent);
+                    UnityEditor.EditorUtility.SetDirty(networkPrefabs);
+                }
+                
+                Debug.Log($"Car added to DefaultNetworkPrefabs.asset: {name}");
+            }
         }
     }
 }

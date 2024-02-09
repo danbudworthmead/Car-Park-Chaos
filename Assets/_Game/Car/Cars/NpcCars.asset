@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: NpcCars
   m_EditorClassIdentifier: 
   cars:
-  - {fileID: 7324802498663531149, guid: 6f372cf8ee94d3e44996bc8b3721d777, type: 3}
+  - {fileID: 7232902476163790620, guid: 6f372cf8ee94d3e44996bc8b3721d777, type: 3}

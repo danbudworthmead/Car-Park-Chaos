@@ -1,11 +1,12 @@
 using System;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace _Game.Car
 {
+    [Serializable]
     public class Car : NetworkBehaviour
     {
         // car wheels
@@ -63,6 +64,7 @@ namespace _Game.Car
         {
             AssignParts();
             AddColliders(false);
+            gameObject.AddComponent<NetworkObject>();
         }
         
         public void AssignParts()
@@ -104,7 +106,6 @@ namespace _Game.Car
         public void AddComponents()
         {
             gameObject.AddComponent<NetworkObject>();
-            gameObject.AddComponent<CarController>();
             
             var physics = gameObject.AddComponent<CarPhysics>();
             physics.car = this;
@@ -114,6 +115,11 @@ namespace _Game.Car
             carAudio.carPhysics = physics;
             carAudio.engineAudio = engine.gameObject.AddComponent<AudioSource>();
             carAudio.hornAudio = horn.gameObject.AddComponent<AudioSource>();
+            
+            var networkTransform = gameObject.AddComponent<ClientNetworkTransform>();
+            networkTransform.SlerpPosition = true;
+            networkTransform.UseQuaternionSynchronization = true;
+            gameObject.AddComponent<NetworkRigidbody>();
         }
 
         public void AddColliders(bool withWheels = true)
@@ -166,10 +172,6 @@ namespace _Game.Car
             // add a center of mass to the car
             var center = Vector3.zero;
             rb.centerOfMass = center;
-            
-            // add network transform to the car
-            gameObject.AddComponent<NetworkTransform>();
-            gameObject.AddComponent<NetworkRigidbody>();
         }
     }
 }
