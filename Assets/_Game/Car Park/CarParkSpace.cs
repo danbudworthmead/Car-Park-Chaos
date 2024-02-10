@@ -79,7 +79,7 @@ namespace _Game.Car_Park
                 CarInSpace = FindObjectsOfType<CarPhysics>()
                     .First(car => car.OwnerClientId == carOwnerId);
                 CarInSpace.GetComponent<PlayerState>().SetParked();
-                MatchManager.Singleton.CurrentRound.onEvent.Invoke(RoundManager.EventType.Parked, CarInSpace);
+                MatchManager.Singleton.onEvent.Invoke(MatchManager.GameEventType.Parked, CarInSpace);
             }
         }
 

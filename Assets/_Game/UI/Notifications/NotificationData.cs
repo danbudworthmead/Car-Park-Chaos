@@ -8,5 +8,11 @@ namespace Assets._Game.UI
 {
     class NotificationData
     {
+        public string content;
+        
+        public NotificationData(string content)
+        {
+            this.content = content;
+        }
     }
 }

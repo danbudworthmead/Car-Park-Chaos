@@ -14,7 +14,8 @@ namespace _Game.Game_States_Logic
         public enum GameEventType
         {
             KnockedOut,
-            Parked
+            Parked,
+            Start
         }
 
         public Action<GameEventType, CarPhysics> onEvent;
