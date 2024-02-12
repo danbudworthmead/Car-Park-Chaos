@@ -4,6 +4,7 @@ using System.Linq;
 using _Game.Car;
 using _Game.Car_Park;
 using _Game.Car.Player;
+using Scenes.Online;
 using Unity.Netcode;
 using UnityEngine;
 using Random = System.Random;
@@ -134,7 +135,7 @@ namespace _Game.Game_States_Logic
                     break;
                 case RoundStates.Playing:
                     // wait until all spaces have been taken or timer has ran out
-                    if (!AnyFreeSpaces() || timer <= 0.0f)
+                    if ((!AnyFreeSpaces() || timer <= 0.0f) && RelayManager.Instance)
                     {
                         var playerIds = NetworkManager.Singleton.ConnectedClients
                             .Values
