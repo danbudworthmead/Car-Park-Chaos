@@ -20,7 +20,7 @@ namespace _Game.Car
 
         public float Speed { get; private set; }
 
-        public NetworkVariable<float> EngineRPM = new (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<float> engineRpm = new (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         
         // netcode general
         private NetworkTimer _networkTimer;
@@ -222,11 +222,10 @@ namespace _Game.Car
 
         private void Move(VehicleInput input)
         {
-            if (input.accelerator == 0 
-                && input.brake == 0
-                && input.steering == 0)
+            Speed = rigidbody.velocity.magnitude;
+            if (IsOwner)
             {
-                return;
+                engineRpm.Value = Speed;
             }
             
             input.Clamp();
@@ -273,10 +272,6 @@ namespace _Game.Car
             var steering = input.steering * maxTurnAngle;
             car.wheels.frontLeft.steerAngle = steering;
             car.wheels.frontRight.steerAngle = steering;
-        
-            Speed = rigidbody.velocity.magnitude;
-            
-            if (IsOwner) EngineRPM.Value = Speed;
 
         }
 

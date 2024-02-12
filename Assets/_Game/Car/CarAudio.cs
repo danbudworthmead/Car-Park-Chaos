@@ -25,7 +25,7 @@ namespace _Game.Car
         // Update is called once per frame
         private void Update()
         {
-            engineAudio.pitch = 1+carPhysics.EngineRPM.Value/12f;
+            engineAudio.pitch = 1+carPhysics.engineRpm.Value/12f;
         }
 
         [ServerRpc]
