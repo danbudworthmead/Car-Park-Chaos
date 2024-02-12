@@ -100,7 +100,7 @@ namespace _Game.Game_States_Logic
 
         private bool WaitingForPlayers()
         {
-            if (RelayManager.Instance == null) return true;
+            if (RelayManager.Instance == null) return false;
             return NetworkManager.Singleton.ConnectedClients.Count < RelayManager.Instance.PlayersInLobby.Count;
         }
 

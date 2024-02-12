@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using _Game.Netcode;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,22 +29,32 @@ namespace _Game.Car
             }
         }
 
+        private void FixedUpdate()
+        {
+            
+        }
+
+        private void Move(Vector2 input)
+        {
+            
+        }
+
         public void OnAccelerate(InputValue value)
         {
             if (!_carPhysics) return;
-            _carPhysics.SetAccelerationServerRpc(value.Get<float>());
+            _carPhysics.SetAcceleration(value.Get<float>());
         }
     
         public void OnBrake(InputValue value)
         {
             if (!_carPhysics) return;
-            _carPhysics.SetBrakeServerRpc(value.Get<float>());
+            _carPhysics.SetBrake(value.Get<float>());
         }
 
         public void OnSteering(InputValue value)
         {
             if (!_carPhysics) return;
-            _carPhysics.SetSteeringServerRpc(value.Get<float>());
+            _carPhysics.SetSteering(value.Get<float>());
         }
 
         public void OnHorn(InputValue value)
