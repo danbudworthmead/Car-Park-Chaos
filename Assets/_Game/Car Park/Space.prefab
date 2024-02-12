@@ -145,4 +145,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 4181817326484914391}
-  cars: {fileID: 11400000, guid: bf60629c1a75e9a4e911df3beca872cc, type: 2}
+  cars: {fileID: 11400000, guid: 634493f7d716b2c47889e3dd52feb302, type: 2}

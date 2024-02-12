@@ -1,44 +1,65 @@
+using System;
+using System.Collections.Generic;
+using _Game.Netcode;
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace _Game.Car
 {
-    public class CarController : NetworkBehaviour
+    public class CarController : MonoBehaviour
     {
         private CarPhysics _carPhysics;
         private CarAudio _carAudio;
 
-        private void Awake()
+        private void Update()
         {
-            _carPhysics = GetComponent<CarPhysics>();
-            _carAudio = GetComponent<CarAudio>();
+            var car = NetworkManager.Singleton.LocalClient.PlayerObject;
+            if (!car)
+            {
+                _carPhysics = null;
+                _carAudio = null;
+                return;
+            }
+
+            if (car.GetComponent<Car>())
+            {
+                _carPhysics = car.GetComponent<CarPhysics>();
+                _carAudio = car.GetComponent<CarAudio>();
+            }
         }
 
-        private void Start()
+        private void FixedUpdate()
         {
-            if (!IsOwner)
-            {
-                Destroy(this);
-            }
+            
+        }
+
+        private void Move(Vector2 input)
+        {
+            
         }
 
         public void OnAccelerate(InputValue value)
         {
+            if (!_carPhysics) return;
             _carPhysics.SetAcceleration(value.Get<float>());
         }
     
         public void OnBrake(InputValue value)
         {
+            if (!_carPhysics) return;
             _carPhysics.SetBrake(value.Get<float>());
         }
 
         public void OnSteering(InputValue value)
         {
+            if (!_carPhysics) return;
             _carPhysics.SetSteering(value.Get<float>());
         }
 
         public void OnHorn(InputValue value)
         {
+            if (!_carAudio) return;
             _carAudio.HonkHornServerRpc();
         }
     }

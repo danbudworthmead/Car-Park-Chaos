@@ -1,12 +1,10 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace _Game.Car.Player_Cars
+namespace _Game.Car.Player
 {
     public class PlayerState : NetworkBehaviour
     {
-        [SerializeField] private Rigidbody carRigidbody;
         [SerializeField] private CarPhysics physics;
 
         public enum PlayerStates
@@ -23,7 +21,10 @@ namespace _Game.Car.Player_Cars
         [ClientRpc]
         public void UnfreezeClientRpc()
         {
-            carRigidbody.constraints = RigidbodyConstraints.None;
+            foreach (var rb in GetComponentsInChildren<Rigidbody>())
+            {
+                rb.constraints = RigidbodyConstraints.None;
+            }
         }
 
         public void SetParked()
@@ -35,7 +36,10 @@ namespace _Game.Car.Player_Cars
             
             _isParked = true;
             // Freeze car? (probably not the best method but)
-            carRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            foreach (var rb in GetComponentsInChildren<Rigidbody>())
+            {
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+            }
             Debug.Log($"{OwnerClientId} has parked");
         }
 

@@ -31,6 +31,7 @@ namespace _Game.Camera
             }
             else
             {
+                // follow the target but keep upright using lerp
                 var cam = UnityEngine.Camera.main;
                 if (cam == null)
                 {
@@ -45,8 +46,6 @@ namespace _Game.Camera
                 cam.transform.position = Vector3.Lerp(camParent.position, secondCamParent.position, ratio);
                 cam.transform.rotation = Quaternion.Lerp(camParent.rotation, secondCamParent.rotation, ratio);
                 
-                // follow the target but keep upright
-                transform.position = _target.position;
                 var newRot = Quaternion.Euler(0, _target.eulerAngles.y, 0);
                 transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * 2.5f);
             }

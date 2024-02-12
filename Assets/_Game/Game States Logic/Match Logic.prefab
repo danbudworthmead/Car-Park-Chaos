@@ -68,3 +68,4 @@ MonoBehaviour:
   roundLogicPrefab: {fileID: -9117375190318734683, guid: 4eeac9fdd5dca40418394d37443a9584,
     type: 3}
   RoundDuration: 180
+  cars: {fileID: 11400000, guid: bf60629c1a75e9a4e911df3beca872cc, type: 2}
