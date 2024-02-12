@@ -37,6 +37,8 @@ namespace _Game.Camera
                 {
                     return;
                 }
+
+                transform.position = _target.transform.position;
                 
                 var rb = _target.GetComponent<Rigidbody>();
                 var speed = rb.velocity.magnitude;

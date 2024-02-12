@@ -16,7 +16,7 @@ namespace _Game.Car
         
         [SerializeField] public Car car;
 
-        private VehicleInput _input = new();
+        private VehicleInput _input;
 
         public float Speed { get; private set; }
 
@@ -39,9 +39,6 @@ namespace _Game.Car
         
         [Header("Netcode")]
         [SerializeField] private float reconciliationThreshold = 10f;
-
-        [SerializeField] private GameObject serverCube;
-        [SerializeField] private GameObject clientCube;
 
         private void Awake()
         {
@@ -142,8 +139,6 @@ namespace _Game.Car
             var clientState = IsHost ? _clientStateBuffer.Get(bufferIndex - 1) : _clientStateBuffer.Get(bufferIndex);
             positionError = Vector3.Distance(rewindState.position, clientState.position);
             
-            Debug.Log(positionError);
-
             if (positionError > reconciliationThreshold) {
                 ReconcileState(rewindState);
             }
