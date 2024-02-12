@@ -98,8 +98,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: bcd7bf2415aec59428a50c900ab6dab9,
-    type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: b4724b03ff8733f44af382941f11aa18,
     type: 2}
 --- !u!196 &4
@@ -35259,6 +35258,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: -3809945072200597350, guid: db87672d20ffe3842bf020a2945f8b84,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -3445858327436387880, guid: db87672d20ffe3842bf020a2945f8b84,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -43261,6 +43265,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Space (449)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7116825888126517493, guid: 04e52e799395fab42a66800318b02b89,
+        type: 3}
+      propertyPath: m_DecalLayerMask
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8442921624581732266, guid: 04e52e799395fab42a66800318b02b89,
         type: 3}
