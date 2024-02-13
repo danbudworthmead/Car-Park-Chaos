@@ -53,6 +53,11 @@ namespace _Game.Car
             AddComponents();
             AddColliders();
             AddLights();
+
+            SetupWheel(frontLeftWheel, wheels.frontLeft);
+            SetupWheel(frontRightWheel, wheels.frontRight);
+            SetupWheel(rearLeftWheel, wheels.rearLeft);
+            SetupWheel(rearRightWheel, wheels.rearRight);
         }
 
         private void AddLights()
@@ -122,6 +127,11 @@ namespace _Game.Car
             gameObject.AddComponent<NetworkRigidbody>();
         }
 
+        private void SetupWheel(Transform wheelMesh, WheelCollider wheelCol)
+        {
+            wheelMesh.gameObject.AddComponent<Wheel>().SetCollider(wheelCol);
+        }
+
         public void AddColliders(bool withWheels = true)
         {
             // add a box collider to the car and calculate the size based on the body
@@ -149,13 +159,7 @@ namespace _Game.Car
 
         private WheelCollider AddWheelCollider(Transform wheel)
         {
-            var col = wheel.gameObject.AddComponent<WheelCollider>();
-            // calculate the radius and width of the wheel from the mesh, take the scale into account
-            var mesh = wheel.GetComponent<MeshRenderer>().bounds;
-            var radius = mesh.size.y / 2 / wheel.localScale.y;
-            col.radius = radius;
-            col.center = new Vector3(0, 0, radius);
-            return col;
+            return wheel.gameObject.AddComponent<WheelCollider>();
         }
 
         public void AddRigidbody()
