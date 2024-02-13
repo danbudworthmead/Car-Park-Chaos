@@ -51,7 +51,7 @@ namespace _Game.Game_States_Logic
             var carParkSpaces = FindObjectOfType<CarParkSpaces>().spaces;
             foreach (var space in carParkSpaces)
             {
-                space.SetCar(rng.Next(int.MaxValue));
+                space.SetCar(rng.Next(int.MaxValue), rng.Next(int.MaxValue));
                 
                 if (rng.Next(2) == 0)
                 {
