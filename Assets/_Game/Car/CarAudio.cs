@@ -13,6 +13,9 @@ namespace _Game.Car
         
         [SerializeField]
         public AudioSource hornAudio;
+
+        [SerializeField] 
+        public float enginePitchModifier = 8f;
     
         // Start is called before the first frame update
         private void Start()
@@ -25,7 +28,7 @@ namespace _Game.Car
         // Update is called once per frame
         private void Update()
         {
-            engineAudio.pitch = 1+carPhysics.engineRpm.Value/12f;
+            engineAudio.pitch = 1+carPhysics.engineRpm.Value/enginePitchModifier;
         }
 
         [ServerRpc]

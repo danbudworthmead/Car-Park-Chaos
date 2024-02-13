@@ -848,7 +848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 897515027
+  GlobalObjectIdHash: 487186616
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -929,7 +929,7 @@ MonoBehaviour:
   maxTurnAngle: 15
   rigidbody: {fileID: -9218692863357201879}
   car: {fileID: 6140927808321769916}
-  EngineRPM:
+  engineRpm:
     m_InternalValue: 0
   reconciliationThreshold: 10
 --- !u!114 &6521682487801957838
@@ -1174,12 +1174,13 @@ AudioSource:
   m_GameObject: {fileID: 5691031841639378992}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 3715dc315994f8c40a2fb4c3396b9c67,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: b722c5c1b7f16724eaaa903e6ace9820, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1221,7 +1222,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1483,9 +1484,10 @@ AudioSource:
   m_GameObject: {fileID: 7096544344756653149}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 3715dc315994f8c40a2fb4c3396b9c67,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 96086bb1d5ee6dd44b172ac6d5dd70ea, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1530,7 +1532,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
