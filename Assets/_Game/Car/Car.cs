@@ -1,4 +1,5 @@
 using System;
+using _Game.Materials;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
 using Unity.Netcode.Components;
@@ -172,6 +173,12 @@ namespace _Game.Car
             // add a center of mass to the car
             var center = Vector3.zero;
             rb.centerOfMass = center;
+        }
+
+        public void SetColour(int col)
+        {
+            var mat = MaterialsData.Get(col);
+            body.GetComponent<MeshRenderer>().material = mat;
         }
     }
 }

@@ -82,7 +82,7 @@ namespace _Game.Car_Park
             }
         }
 
-        public void SetCar(int carIdx)
+        public void SetCar(int carIdx, int colourId)
         {
             if (NpcCar)
             {
@@ -95,6 +95,8 @@ namespace _Game.Car_Park
             CarInSpace = null;
             collider.isTrigger = false;
             NpcCar.SetActive(true);
+            
+            NpcCar.GetComponent<Car.Car>().SetColour(colourId);
         }
 
         public void Free()
