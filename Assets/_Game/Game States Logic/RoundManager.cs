@@ -55,7 +55,7 @@ namespace _Game.Game_States_Logic
                 
                 if (rng.Next(2) == 0)
                 {
-                    space.NpcCar.transform.Rotate(Vector3.forward, 180);
+                    space.NpcCar.transform.Rotate(Vector3.up, 180);
                 }
             }
 
