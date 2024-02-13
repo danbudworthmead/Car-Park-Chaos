@@ -6,6 +6,12 @@ namespace _Game.Car
     {
         [SerializeField] private Material off;
         [SerializeField] private Material on;
+
+        public void SetMaterials()
+        {
+            off = Resources.Load<Material>("Materials/Pallet");
+            on = Resources.Load<Material>("Materials/Pallet_Lights");
+        }
     
         public void SetOn(bool on)
         {

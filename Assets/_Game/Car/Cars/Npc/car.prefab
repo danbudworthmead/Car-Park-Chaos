@@ -372,9 +372,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: -8679921383154817045}
-  - component: {fileID: 1198517817274361050}
-  - component: {fileID: -1521773487977581218}
-  - component: {fileID: 3917213504261181834}
+  - component: {fileID: -4399429495135993260}
+  - component: {fileID: 7730916123665710029}
+  - component: {fileID: 7945280922545690778}
   m_Layer: 0
   m_Name: car
   m_TagString: Untagged
@@ -410,7 +410,7 @@ Transform:
   - {fileID: -5516829090846233171}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1198517817274361050
+--- !u!114 &-4399429495135993260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -439,7 +439,7 @@ MonoBehaviour:
     frontRight: {fileID: 0}
     rearLeft: {fileID: 0}
     rearRight: {fileID: 0}
---- !u!65 &-1521773487977581218
+--- !u!65 &7730916123665710029
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -460,7 +460,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4580591, y: 0.89442325, z: 2.6264842}
   m_Center: {x: 0, y: 0.67081743, z: 0}
---- !u!114 &3917213504261181834
+--- !u!114 &7945280922545690778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

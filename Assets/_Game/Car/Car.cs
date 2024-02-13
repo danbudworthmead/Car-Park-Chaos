@@ -63,6 +63,7 @@ namespace _Game.Car
         private void AddLights()
         {
             rearHeadlights = rearLights.gameObject.AddComponent<Headlights>();
+            rearHeadlights.SetMaterials();
         }
 
         public void CreateNpcCarPrefab()
