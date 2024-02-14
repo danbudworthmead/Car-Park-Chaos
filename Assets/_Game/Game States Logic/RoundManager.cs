@@ -24,7 +24,9 @@ namespace _Game.Game_States_Logic
         public RoundStates RoundState { get; private set; } = RoundStates.Initializing;
         public float timer;
         private readonly List<CarParkSpace> _parkingSpaces = new();
-        private float _countdownTimer;
+        
+        private const float CountdownTime = 3.0f;
+        public float CountdownTimer { get; private set; }
 
         private void Start()
         {
@@ -90,9 +92,16 @@ namespace _Game.Game_States_Logic
             {
                 case RoundStates.Initializing:
                     timer = MatchManager.Singleton.RoundDuration;
+                    CountdownTimer = CountdownTime;
+                    break;
+                case RoundStates.Countdown:
+                    CountdownTimer -= Time.deltaTime;
+                    CountdownTimer = Mathf.Clamp(CountdownTimer, 0, CountdownTime);
                     break;
                 case RoundStates.Playing:
                     timer -= Time.deltaTime;
+                    break;
+                case RoundStates.GameOver:
                     break;
             }
         }
@@ -104,14 +113,14 @@ namespace _Game.Game_States_Logic
             {
                 case RoundStates.Initializing:
                     SetupPlayers();
-                    _countdownTimer = 3f;
+                    CountdownTimer = CountdownTime;
                     SetStateClientRpc(RoundStates.Countdown);
                     break;
                 case RoundStates.Countdown:
                     // do a 3 second countdown
-                    if (_countdownTimer > 0.0f)
+                    if (CountdownTimer > 0.0f)
                     {
-                        _countdownTimer -= Time.deltaTime;
+                        CountdownTimer -= Time.deltaTime;
                     }
                     else
                     {
